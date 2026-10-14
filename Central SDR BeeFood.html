@@ -1,0 +1,603 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Central SDR BeeFood</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#FBF7F6; --surface:#FFFFFF; --surface-2:#F4ECEB; --ink:#1E1416; --muted:#6D5F62; --line:#E6DAD9;
+  --red:#C8102E; --red-ink:#FFFFFF; --red-soft:#FBE3E6; --honey:#F2B705; --honey-soft:#FDF2CC; --honey-ink:#5A4300;
+  --bubble:#E9F7E4; --bubble-ink:#16301A; --ok:#1F8A4C; --side:#1E1416; --side-ink:#F4ECEC; --side-muted:#B3A4A7; --side-hover:#2E2326;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --bg:#151012; --surface:#1F181A; --surface-2:#2A2124; --ink:#F4ECEC; --muted:#B3A4A7; --line:#3A2F32;
+    --red:#FF5A6E; --red-ink:#1A0508; --red-soft:#3A1920; --honey:#F5C542; --honey-soft:#3A3014; --honey-ink:#F7DC8A;
+    --bubble:#1D3323; --bubble-ink:#DDF3E1; --ok:#5FD08F; --side:#0E0A0B; --side-ink:#F4ECEC; --side-muted:#9C8D90; --side-hover:#231B1D;}
+}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#151012; --surface:#1F181A; --surface-2:#2A2124; --ink:#F4ECEC; --muted:#B3A4A7; --line:#3A2F32;
+  --red:#FF5A6E; --red-ink:#1A0508; --red-soft:#3A1920; --honey:#F5C542; --honey-soft:#3A3014; --honey-ink:#F7DC8A;
+  --bubble:#1D3323; --bubble-ink:#DDF3E1; --ok:#5FD08F; --side:#0E0A0B; --side-ink:#F4ECEC; --side-muted:#9C8D90; --side-hover:#231B1D;}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 "Figtree",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","Figtree",system-ui,sans-serif;text-wrap:balance;margin:0}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--red)}
+:focus-visible{outline:3px solid var(--honey);outline-offset:2px;border-radius:6px}
+.hex{display:inline-block;width:.72em;height:.82em;background:var(--honey);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+
+/* shell */
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+.side{background:var(--side);color:var(--side-ink);padding:22px 14px;position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:20px}
+.brand small{display:block;font-family:"Figtree",sans-serif;font-weight:500;font-size:12px;color:var(--side-muted);letter-spacing:.08em;text-transform:uppercase}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .grp{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--side-muted);padding:12px 10px 4px}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--side-ink);text-decoration:none;font-weight:500;font-size:14.5px}
+.nav a:hover{background:var(--side-hover)}
+.nav a.on{background:var(--red);color:#fff}
+.nav a .n{margin-left:auto;font-size:12px;opacity:.7}
+.side .foot{margin-top:auto;font-size:12.5px;color:var(--side-muted);padding:0 8px}
+.content{min-width:0;padding-inline:32px;padding-block:28px 72px}
+.inner{max-width:1080px;margin:0 auto}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:sticky;top:0;z-index:5;height:auto;padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top,0px));gap:10px}
+  .nav{flex-direction:row;overflow-x:auto;gap:4px;padding-bottom:2px}
+  .nav .grp{display:none}
+  .nav a{white-space:nowrap;padding:7px 12px}
+  .nav a .n{display:none}
+  .side .foot{display:none}
+  .content{padding-inline:16px;padding-block:20px 64px}
+}
+
+/* top bar */
+.topbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:24px}
+.search{flex:1;min-width:220px;max-width:460px;position:relative}
+.search input{width:100%;padding:11px 14px 11px 38px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.crumb{font-size:13px;color:var(--muted)}
+
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);font-weight:700}
+.ph{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.ph h1{font-size:clamp(28px,4.5vw,42px);font-weight:800;line-height:1.05;margin-top:6px}
+.lede{color:var(--muted);max-width:62ch;margin:8px 0 0}
+
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;font-size:13.5px;font-weight:600}
+.btn.primary{background:var(--red);border-color:var(--red);color:var(--red-ink)}
+.btn:hover{filter:brightness(.97)}
+.btn.ok{color:var(--ok);border-color:var(--ok)}
+
+/* home */
+.hero{background:var(--side);color:var(--side-ink);border-radius:20px;padding:32px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px;align-items:center}
+.hero h1{font-size:clamp(30px,4.8vw,48px);font-weight:800;line-height:1.02}
+.hero h1 em{font-style:normal;color:var(--honey)}
+.hero p{color:var(--side-muted);max-width:56ch}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fact{background:var(--side-hover);border-radius:12px;padding:14px}
+.fact b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:24px;color:var(--honey);line-height:1.1}
+.fact span{font-size:13px;color:var(--side-muted)}
+@media (max-width:760px){.hero{grid-template-columns:1fr;padding:22px}}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:22px}
+.card{display:flex;flex-direction:column;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;text-decoration:none;color:var(--ink)}
+.card:hover{border-color:var(--red)}
+.card b{font-size:16px}
+.card span{font-size:13.5px;color:var(--muted)}
+.prose{max-width:68ch}
+.prose p{margin:0 0 12px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:26px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px}
+.box h2{font-size:20px;margin-bottom:10px}
+
+/* flow */
+.fgrid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px}
+@media (max-width:1100px){.fgrid{grid-template-columns:1fr}}
+.fside .sticky{position:sticky;top:16px;display:flex;flex-direction:column;gap:16px}
+@media (max-width:1100px){.fside .sticky{position:static}.fside{order:2}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.panel h3{font-size:15px;font-weight:600;margin-bottom:10px}
+.map{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.map a{display:grid;grid-template-columns:40px 1fr;gap:8px;align-items:center;padding:6px 8px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:14px}
+.map a:hover{background:var(--surface-2)}
+.map a.cur{background:var(--red-soft)}
+.map .code{font-size:12px;color:var(--muted)}
+.map a.cur .code{color:var(--red)}
+.map .done::after{content:" ✓";color:var(--ok);font-weight:700}
+.sum dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 10px;font-size:13.5px}
+.sum dt{color:var(--muted)}
+.sum dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.sum dd.empty{font-weight:400;color:var(--muted)}
+.sum .actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.steps{display:flex;flex-direction:column;gap:16px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;scroll-margin-top:90px}
+.step.active{border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+.step-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:14px}
+.step-head .code{font-size:12.5px;background:var(--surface-2);padding:3px 8px;border-radius:6px;color:var(--muted)}
+.step-head h2{font-size:20px;font-weight:600}
+.when{font-size:13px;color:var(--muted);width:100%}
+.chat{display:flex;gap:12px;align-items:flex-start}
+.bubble{flex:1;min-width:0;background:var(--bubble);color:var(--bubble-ink);border-radius:4px 14px 14px 14px;padding:14px 16px;white-space:pre-line;overflow-wrap:anywhere}
+.bubble a{color:inherit}
+.note{margin-top:12px;background:var(--honey-soft);color:var(--honey-ink);border-radius:10px;padding:10px 14px;font-size:14px;white-space:pre-line}
+.note b{font-weight:700}
+.opts{margin-top:16px}
+.lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px}
+.opt-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.opt{display:flex;flex-direction:column;gap:2px;text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px}
+.opt:hover{border-color:var(--red)}
+.opt.sel{border-color:var(--red);background:var(--red-soft)}
+.opt .a{font-weight:600}
+.opt .go{font-size:12.5px;color:var(--muted)}
+.opt.sel .go{color:var(--red)}
+.field{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit}
+@media (max-width:560px){.chat{flex-direction:column}.chat>.btn{align-self:flex-end}}
+
+/* knowledge */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.kgroup{margin-bottom:26px}
+.kgroup>h2{font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.kgroup>h2 .c{font-family:"Figtree",sans-serif;font-size:13px;color:var(--muted);font-weight:500}
+.klist{display:flex;flex-direction:column;gap:8px}
+details.k{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+details.k[open]{border-color:var(--red)}
+details.k summary{list-style:none;cursor:pointer;padding:13px 16px;display:flex;align-items:center;gap:10px;font-weight:600}
+details.k summary::-webkit-details-marker{display:none}
+details.k summary::after{content:"+";margin-left:auto;font-size:20px;line-height:1;color:var(--muted)}
+details.k[open] summary::after{content:"–"}
+details.k .tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--surface-2);color:var(--muted);padding:2px 7px;border-radius:5px;font-weight:700}
+.kbody{padding:0 16px 16px;display:flex;flex-direction:column;gap:10px}
+.kbody .txt{white-space:pre-line;overflow-wrap:anywhere}
+.kbody .chat .bubble{font-size:14.5px}
+mark{background:var(--honey-soft);color:var(--honey-ink);border-radius:3px;padding:0 2px}
+
+/* plans */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.plan.top{border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+.plan h2{font-size:24px;font-weight:800}
+.plan .tagline{color:var(--muted);font-size:14px;margin-top:2px}
+.price{display:grid;gap:8px;font-variant-numeric:tabular-nums}
+.price .row{display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-top:1px dashed var(--line);padding-top:8px}
+.price .row:first-child{border-top:0;padding-top:0}
+.price .k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.price .v{white-space:nowrap;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:22px}
+.price .s{font-size:13px;color:var(--muted);text-align:right}
+.feat{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.feat li{display:grid;grid-template-columns:14px 1fr;gap:8px}
+.feat li::before{content:"";width:9px;height:10px;margin-top:6px;background:var(--honey);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.feat .inh{font-weight:700;color:var(--red)}
+.feat .inh::before{background:var(--red)}
+
+/* pipeline */
+.pipe{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.pst{flex:1 0 150px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;position:relative}
+.pst b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:17px}
+.pst span{font-size:13px;color:var(--muted)}
+.pst.hot{border-color:var(--red)}
+.pst.hot b{color:var(--red)}
+.pst.cold{background:var(--surface-2)}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.rule h3{font-size:16px;font-weight:600;margin-bottom:6px}
+.rule p{margin:0;white-space:pre-line;font-size:14.5px;color:var(--ink)}
+.rule.alert{border-color:var(--red);background:var(--red-soft)}
+.sec-h{font-size:22px;margin:28px 0 12px}
+.empty{color:var(--muted);padding:30px 0}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;z-index:10}
+@media (prefers-reduced-motion:no-preference){.step,.card,details.k{transition:border-color .2s,box-shadow .2s}}
+</style>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span class="hex" aria-hidden="true"></span><div>BeeFood<small>Central SDR</small></div></div>
+    <nav class="nav" id="nav" aria-label="Seções"></nav>
+    <div class="foot">Site sempre em atualização. Se não achou alguma informação, solicite contato com a Nicolly.</div>
+  </aside>
+  <div class="content"><div class="inner">
+    <div class="topbar">
+      <label class="search" for="q"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Buscar: totem, Stone, nota fiscal, planos…" autocomplete="off" aria-label="Buscar no site"></label>
+      <span class="crumb" id="crumb"></span>
+    </div>
+    <div id="view"></div>
+  </div></div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ====================== CONTEÚDO ====================== */
+const FIM_NOTE="<b>“Estou com dúvida”:</b> envie a mensagem acima e responda.\n<b>“Pode mostrar”:</b> crie o resumo e passe o lead para o próximo vendedor, com a anotação no comentário do Bitrix.";
+const ABERTURA="Olá, (NOME)! Tudo bem? 😊\nSou a (SDR) da BeeFood 🐝\nVou te fazer algumas perguntas rápidas para entender melhor o seu negócio e identificar como o BeeFood pode ajudar.\nHoje vocês trabalham com:\n1️⃣ Delivery\n2️⃣ Presencial\n3️⃣ Delivery + Presencial";
+const PROCURA="Maravilha (FULANO), e hoje, qual é a maior dificuldade ou o principal ponto que você gostaria de melhorar na gestão do seu restaurante? 😊";
+const PROCURA_NOTE="<b>SDR:</b> explique se temos ou não a necessidade que o lead busca.";
+const GESTAO="Só confirmando: controle de estoque e financeiro são essenciais para sua operação? 😄\n1️⃣ Controle de estoque\n2️⃣ Financeiro\n3️⃣ Ambos";
+const SISTEMA="Hoje, você conta com algum sistema de gestão para te ajudar na operação? 😊\n1️⃣ Sim\n2️⃣ Não";
+const FINAL="Sobre o que conversamos ficou com alguma dúvida ou posso te mostrar o plano ideal?\n1- Pode mostrar\n2- Estou com dúvida";
+const SEMPC="Obrigada por confirmar! 😊\nPara uma experiência completa, o ideal é usar computador ou notebook. 💻\nVocê já tem previsão de quando terá acesso a um?";
+const FLOWS={
+delivery:{title:"Roteiro Delivery",lede:"Versão válida desde 21/09. Siga as mensagens na ordem e clique na resposta do lead para ir à próxima etapa. O resumo para o vendedor se monta sozinho.",
+ keys:["Operação","Entregas","Dispositivo","Previsão de PC","Dificuldade","Gestão","Usa sistema","Fechamento"],
+ steps:[
+ {id:"s01",code:"01",title:"Abertura",when:"OFC_COMERCIAL · primeira mensagem para todo lead.",msg:ABERTURA,
+  key:"Operação",opts:[["1️⃣ Delivery","s02"],["2️⃣ Presencial","@presencial"],["3️⃣ Delivery + Presencial","s02"]]},
+ {id:"s02",code:"02",title:"Tipo de entrega",when:"Lead respondeu Delivery ou Delivery + Presencial.",
+  msg:"Perfeito! 🚀\nA BeeFood tem robô integrado ao WhatsApp + cardápio digital para agilizar seus pedidos. 🐝\nHoje, suas entregas são feitas por:\n1️⃣ Motoboy próprio\n2️⃣ Marketplaces (IFOOD, UAIRANGO, KEETA)\n3️⃣ Ambos",
+  key:"Entregas",opts:[["1️⃣ Motoboy próprio","s04"],["2️⃣ Marketplaces","s03"],["3️⃣ Ambos","s03"]]},
+ {id:"s03",code:"03",title:"Usa marketplaces",when:"USA MKT_COMERCIAL · lead usa marketplaces (ou marketplaces + motoboy).",
+  msg:"Legal! 😊\nA BeeFood integra com iFood, 99Food, Keeta, UaiRango, Rappi, Delivery Much e Aiqfome, centralizando seus pedidos em um só lugar. 🚀\n📍 Se você usa iFood, temos o Entrega Fácil, que permite solicitar motoboys direto pelo sistema. 🛵\nHoje vocês utilizam:\n1️⃣ Computador/notebook\n2️⃣ Celular\n3️⃣ Ambos",
+  note:"<b>Respondeu “Ambos” na etapa 02?</b> Cite também o app para entregadores da etapa 04.",
+  key:"Dispositivo",opts:[["1️⃣ Computador/notebook","s07"],["2️⃣ Celular","nopc"],["3️⃣ Ambos","s07"]]},
+ {id:"s04",code:"04",title:"Usa motoboy",when:"MOTOBOY_COMERCIAL · lead usa só motoboy próprio.",
+  msg:"(FULANO), também temos um app para entregadores, com acompanhamento e rotas inteligentes. 🚀\nHoje vocês utilizam:\n1️⃣ Computador/notebook\n2️⃣ Celular\n3️⃣ Ambos",
+  key:"Dispositivo",opts:[["1️⃣ Computador/notebook","s07"],["2️⃣ Celular","nopc"],["3️⃣ Ambos","s07"]]},
+ {id:"nopc",code:"06",title:"Sem PC",when:"SEM PC_COMERCIAL · lead respondeu que usa só celular.",msg:SEMPC,
+  key:"Previsão de PC",free:"em 2 semanas",next:"s07"},
+ {id:"s07",code:"07",title:"Principal dificuldade",when:"PROCURA_COMERCIAL · depois de saber o dispositivo.",msg:PROCURA,note:PROCURA_NOTE,
+  key:"Dificuldade",free:"controle de estoque",next:"s08"},
+ {id:"s08",code:"08",title:"Confirmar gestão",when:"GESTÃO_COMERCIAL · depois de explicar as soluções.",msg:GESTAO,
+  key:"Gestão",opts:[["1️⃣ Controle de estoque","sis"],["2️⃣ Financeiro","sis"],["3️⃣ Ambos","sis"]]},
+ {id:"sis",code:"09",title:"Usa sistema",when:"USA SISTEMA · logo após a confirmação de gestão.",msg:SISTEMA,
+  key:"Usa sistema",opts:[["1️⃣ Sim","s09"],["2️⃣ Não","s09"]]},
+ {id:"s09",code:"09B",title:"Dúvida ou plano",when:"FINAL_COMERCIAL · fechamento da qualificação.",msg:FINAL,
+  key:"Fechamento",opts:[["1- Pode mostrar","fim"],["2- Estou com dúvida","fim"]]},
+ {id:"fim",code:"10",title:"Próximo passo",when:"Continuar.final · conforme a resposta anterior.",msg:"Qual seria a sua dúvida?",note:FIM_NOTE}
+]},
+presencial:{title:"Roteiro Presencial",lede:"Para leads que atendem em mesa, balcão ou ambos. O roteiro se divide em Mesas (garçons) e Balcão (PDV). Clique na resposta do lead para avançar.",
+ keys:["Operação","Atendimento","Garçons","Dispositivo","Previsão de PC","Dificuldade","Gestão","Usa sistema","Fechamento"],
+ steps:[
+ {id:"p01",code:"01",title:"Abertura",when:"OFC_COMERCIAL · primeira mensagem para todo lead.",msg:ABERTURA,
+  key:"Operação",opts:[["1️⃣ Delivery","@delivery"],["2️⃣ Presencial","p02"],["3️⃣ Delivery + Presencial","@delivery"]]},
+ {id:"p02",code:"02",title:"Mesa ou balcão",when:"PRESENCIAL · lead respondeu Presencial.",
+  msg:"Certo, e no presencial.\nVocês atendem com garçons nas mesas ou os clientes fazem os pedidos pelo balcão?\nMesa/garçom\nBalcão\nAmbos",
+  key:"Atendimento",opts:[["Mesa/garçom","p03"],["Balcão","pdv"],["Ambos","p03"]]},
+ {id:"p03",code:"M3",title:"Usa garçons",when:"Roteiro Mesas · lead atende com garçom (ou mesa + balcão).",
+  msg:"Maravilha! 😊 Com o QR Code nas mesas, o cliente acessa o cardápio pelo celular e envia o pedido direto para a cozinha. 🚀\nQuantos garçons você tem hoje?\n1️⃣ 0 a 5\n2️⃣ 5 a 10\n3️⃣ Mais de 15",
+  key:"Garçons",opts:[["1️⃣ 0 a 5","p04"],["2️⃣ 5 a 10","p04"],["3️⃣ Mais de 15","p04"]]},
+ {id:"p04",code:"M4",title:"Tem garçons",when:"Roteiro Mesas · depois de saber quantos garçons.",
+  msg:"Certo. O app do garçom ajuda a evitar erros e agiliza os pedidos. Funciona no celular e na Stone, com opção de lançar pedidos e receber pagamentos. 🚀\nVocê conta com qual equipamento?\n1️⃣ Computador\n2️⃣ Celular",
+  extra:["Respondeu “Ambos” na etapa 02? Envie também:","E para os pedidos no balcão, o PDV da BeeFood gerencia vendas e pagamentos de forma integrada. 🚀"],
+  key:"Dispositivo",opts:[["1️⃣ Computador","p05"],["2️⃣ Celular","pnopc"]]},
+ {id:"pdv",code:"B3",title:"Usa PDV",when:"Roteiro Balcão · clientes pedem no balcão.",
+  msg:"Legal! 😊 Com o PDV da BeeFood, você gerencia vendas, pedidos e pagamentos de forma rápida e integrada. 🚀\nVocê conta com qual equipamento?\n1️⃣ Computador\n2️⃣ Celular",
+  key:"Dispositivo",opts:[["1️⃣ Computador","p05"],["2️⃣ Celular","pnopc"]]},
+ {id:"pnopc",code:"PC",title:"Sem PC",when:"SEM PC_COMERCIAL · lead respondeu que usa só celular.",msg:SEMPC,
+  key:"Previsão de PC",free:"em 1 mês",next:"p05"},
+ {id:"p05",code:"05",title:"Principal dificuldade",when:"PROCURA_COMERCIAL · depois do equipamento.",msg:PROCURA,note:PROCURA_NOTE,
+  key:"Dificuldade",free:"controle de comandas",next:"p06"},
+ {id:"p06",code:"06",title:"Confirmar gestão",when:"GESTÃO_COMERCIAL · depois de entender a dificuldade.",msg:GESTAO,
+  key:"Gestão",opts:[["1️⃣ Controle de estoque","psis"],["2️⃣ Financeiro","psis"],["3️⃣ Ambos","psis"]]},
+ {id:"psis",code:"07",title:"Usa sistema",when:"USA SISTEMA · logo após a confirmação de gestão.",msg:SISTEMA,
+  key:"Usa sistema",opts:[["1️⃣ Sim","p07"],["2️⃣ Não","p07"]]},
+ {id:"p07",code:"08",title:"Dúvida ou plano",when:"FINAL_COMERCIAL · fechamento da qualificação.",msg:FINAL,
+  key:"Fechamento",opts:[["1- Pode mostrar","pfim"],["2- Estou com dúvida","pfim"]]},
+ {id:"pfim",code:"09",title:"Próximo passo",when:"Continuar.final · conforme a resposta anterior.",msg:"Qual seria a sua dúvida?",note:FIM_NOTE}
+]}};
+
+/* Funcionalidades (página "Sobre BeeFood"). m = mensagem para enviar ao lead; n = orientação interna */
+const KB=[
+["Visão geral","Resumo geral",{m:"Nosso sistema é uma solução completa para o seu negócio! 🍔📲\nIntegramos PDV, delivery com iFood e outros marketplaces, cardápio digital e automação no WhatsApp para acompanhamento de pedidos.\nNo atendimento presencial, você conta com QR Code nas mesas, comandas, totem de autoatendimento e emissão de nota fiscal integrada.\nAlém disso, oferecemos controle de estoque, gestão de caixa, relatórios completos e muito mais — tudo em uma única plataforma para facilitar sua rotina e aumentar sua produtividade. 😉"}],
+["Visão geral","Gestão",{m:"Na parte de gestão, você conta com ferramentas como controle de estoque, ficha técnica, abertura e fechamento de caixa simplificados, DRE, relatórios completos de vendas e muito mais! 😉"}],
+["Visão geral","PDV (ponto de vendas | frente de caixa)",{m:"Com o PDV do BeeFood, você vende, lança pedidos em mesas ou comandas e recebe pagamentos de um jeito rápido e descomplicado."}],
+["Visão geral","Suporte",{m:"Nosso suporte é 100% humanizado! Uma equipe treinada e pronta pra te ajudar remotamente, com atenção de verdade — todos os dias, inclusive feriados.\n🕘 Horários de atendimento:\nSegunda a sábado: 10h às 22h\nDomingo: 11h às 14h e 17h às 21h"}],
+
+["Delivery","Sobre o delivery",{m:"No delivery, você oferece um cardápio digital próprio para pedidos online, enquanto nosso robô inteligente com IA no WhatsApp mantém seus clientes informados em tempo real sobre o status dos pedidos.\nMais velocidade, menos esforço e uma experiência excelente para o cliente."}],
+["Delivery","Integração com os marketplaces",{m:"Muito mais praticidade: nosso sistema integra com iFood, 99Food, UaiRango, Rappi, Delivery Much e AiqFome — todos os pedidos chegam em um único lugar, facilitando sua operação."}],
+["Delivery","Integração com o iFood",{m:"🚀 Integração com iFood e marketplaces – em 3 etapas que turbinam sua operação:\n1. Recebimento direto no sistema BeeFood\nAssim que o cliente faz o pedido pelo iFood (ou outro marketplace), ele cai automaticamente dentro do seu sistema BeeFood, sem necessidade de redigitar nada ou usar telas paralelas. Isso evita erros e ganha tempo na operação!\n2. Baixa de estoque automatizada dentro do BeeFood\nA cada pedido recebido, o sistema já faz a baixa no seu próprio estoque interno, garantindo controle real da sua cozinha. Importante: essa baixa não interfere no estoque do iFood, ou seja, você tem o controle total no seu PDV, do seu jeito.\n3. Vínculo com o caixa da plataforma\nTodos os pedidos recebidos ficam registrados e vinculados ao seu caixa, com valores, forma de pagamento e origem (iFood, WhatsApp, balcão etc.). Isso dá uma visão completa das vendas e do financeiro, centralizando tudo num só lugar."}],
+["Delivery","BeeBot (robô do WhatsApp)",{m:"O robô da BeeFood atende diversos clientes simultaneamente utilizando inteligência artificial para tornar o atendimento mais rápido e eficiente.\nEle envia o cardápio digital automaticamente, responde mensagens, registra pedidos e ainda atualiza o cliente sobre o status da entrega — tudo de forma automatizada, trazendo mais agilidade para sua operação e reduzindo o tempo de atendimento.\n👉 Faça um pedido teste diretamente pelo WhatsApp:\nhttps://api.whatsapp.com/send/?phone=5515991320694&text&type=phone_number&app_absent=0"}],
+["Delivery","Aplicativo do motoboy",{m:"Importante: a contratação dos motoboys é de responsabilidade do estabelecimento ou pode ser realizada diretamente via iFood.\nPara facilitar a operação das entregas, a BeeFood oferece duas soluções:\n📍 Aplicativo do Motoboy\nPermite definir qual entregador ficará responsável por cada pedido, além de auxiliar na otimização das rotas, contribuindo para entregas mais rápidas e organizadas.\n📍 Módulo Entrega Fácil (iFood)\nCom essa integração, é possível solicitar motoboys diretamente pelo sistema, trazendo mais praticidade para a gestão das entregas."}],
+["Delivery","Pedido agendado / agendamento",{m:"No cardápio digital, o cliente também pode agendar pedidos.\n🔹 Como funciona:\n1️⃣ O cliente escolhe os itens e define a data e horário de retirada ou entrega.\n2️⃣ O pedido entra no sistema marcado como “Agendado” e fica guardado até o horário escolhido.\n3️⃣ Quando chegar o momento, o restaurante recebe a notificação para preparar e despachar.\n4️⃣ O pagamento pode ser feito antecipado ou na hora da retirada/entrega."}],
+["Delivery","Sobre ocultações",{m:"Escolha em quais dias da semana suas promoções estarão ativas e oculte quando quiser — controle total na palma da sua mão!"}],
+["Delivery","Repediu",{m:"🔁 O que é o Repediu?\nÉ uma função do BeeFood que facilita a recompra: o cliente consegue repetir um pedido anterior com apenas um clique, direto pelo WhatsApp ou app.\n💥 Por que isso é importante pro restaurante?\nMais agilidade: o cliente não precisa montar o pedido de novo.\nMais vendas recorrentes: quanto mais simples pedir, mais vezes o cliente volta.\nExperiência sem fricção: prática e rápida.\nMenos erros: pedidos já validados antes = menos retrabalho na cozinha.\n👉 Quer ativar? Cadastre-se aqui:\nhttps://afiliado.repediu.com.br/afiliado/cadastro?bid=RZOYRVN"}],
+["Delivery","Domínio próprio",{m:"🔗 Seu cliente verá o seu domínio personalizado (ex: www.seurestaurante.com.br) no navegador, mantendo a identidade da sua marca.\nAo clicar, ele será automaticamente redirecionado para o seu cardápio digital no nosso sistema, que fica no endereço:\n👉 https://menu.beefood.com.br/doonmadruga\nOu seja, mesmo utilizando nosso sistema, o acesso continua com a cara do seu restaurante! 🐝🍽"}],
+["Delivery","Pixel do Facebook",{m:"Contamos com o Facebook Pixel, que rastreia as ações dos clientes no seu cardápio digital e ajuda a otimizar suas campanhas.\nAssim, seus anúncios ficam mais eficientes e atingem exatamente o público certo!"}],
+["Delivery","Marketplaces que disponibilizam nºs dos clientes",{m:"Sobre os pedidos feitos nos apps de delivery:\nAiqfome e UaiRango: os cadastros dos clientes ficam salvos no sistema.\niFood e Rappi: esses apps não disponibilizam os números dos clientes.\nDelivery Much: em alguns casos, os dados são disponibilizados."}],
+
+["Presencial","QR Code | comandas eletrônicas",{m:"Com o módulo de QR Code nas mesas, o cliente acessa o cardápio digital apenas apontando a câmera do celular, sem precisar baixar aplicativos.\nAlém disso, acompanha o atendimento da mesa em tempo real, enquanto os pedidos são enviados automaticamente para a cozinha."}],
+["Presencial","Aplicativo do garçom",{m:"Com o aplicativo para garçom, é possível lançar pedidos em mesas, comandas ou diretamente para o cliente, inclusive em mesas avulsas.\nO app funciona no celular e também nas maquininhas Stone, enviando os pedidos direto para a cozinha e tornando o atendimento mais ágil e organizado."}],
+["Presencial","Tablet",{m:"A BeeFood oferece um moderno sistema de atendimento em mesas para tablets, permitindo que os clientes realizem pedidos diretamente da mesa com praticidade e agilidade, por meio do cardápio digital integrado à leitura de QR Code.\nImportante: a BeeFood fornece exclusivamente o software da solução, não os equipamentos (tablets)."}],
+["Presencial","Sobre a POS (Stone)",{m:"Temos integração com a maquininha da Stone (POS), totalmente conectada ao sistema BeeFood. Assim, os pagamentos são feitos direto no sistema, sem precisar digitar nada manualmente.\n💳 Aceita cartão de crédito, débito e até Pix, permitindo receber direto na mesa.\n📊 Todos os pagamentos já ficam registrados no PDV, facilitando tanto o fechamento de caixa quanto o controle financeiro."}],
+["Presencial","Integração Stone (contratar maquininha)",{n:"Para leads interessados em contratar a maquininha da Stone: encaminhe o link abaixo para que façam a solicitação direto com eles.\nSe o lead já tiver a máquina da Stone: solicite o Stone Code para que possamos liberar o aplicativo.",m:"https://partnerhub.stone.com.br/#/lp-client/beefood---sistema-para-restaurantes"}],
+["Presencial","Autoatendimento | Totem",{m:"Com o Totem, o próprio cliente faz o pedido, o que ajuda a reduzir filas, agiliza o atendimento e ainda dá mais velocidade na cozinha. 🚀\n👉 Dá uma olhada nesse vídeo de um cliente nosso usando o Totem no balcão: https://www.instagram.com/reel/DJcpiYlvmqd/?igsh=MXdxaG55MXpoY2p0dA==",
+  n:"Pergunta para fazer ao lead: Você já tem o equipamento no seu atendimento?\n\nQual é o preço do equipamento? O aluguel do totem está entre R$ 800 e R$ 1.500, ou comprar um pronto está entre R$ 8.000 e R$ 14.000. Se quiser, mande o link para o lead montar também, que às vezes fica mais em conta.\n\nComo funciona a cobrança:\n• R$ 200,00 por software em cada equipamento de totem.\n• Integração com TEF (cartão direto no totem): R$ 119,90.\n• Ou AutoTEF da Stone: R$ 39,90.\n\nComo explicar totem + sistema:\n• Sistema Geral: aqui caem todos os pedidos, com controle de estoque, ficha técnica, cardápios e muito mais.\n• Sistema do Totem: cada equipamento tem um valor. Só pode ser adicionado junto com o sistema geral.\n• Suporte: treinamento completo e suporte de segunda a segunda. A equipe cadastra toda a plataforma, sem custo."}],
+["Presencial","Parceiros de totem | equipamento",{m:"Segue os contatos dos parceiros de Totem:\ninfoss: (18) 3902-9422 https://wa.me/551839029422 (Somente totem)\nAtta: (19) 99610-8774 https://api.whatsapp.com/send/?phone=5519996108774 (Totem, Tablet, Desktop, Impressora)\n\nSegue os links para você ir se baseando de como seria para montar:\n> Monitor tela touch: https://produto.mercadolivre.com.br/MLB-3354457193-monitor-touch-portatil-156-ips-full-hd-usb-c-hdmi-cabos-_JM\n> Mini PC: https://produto.mercadolivre.com.br/MLB-5147389334-cpu-dell-optiplex-3050-mini-core-i3-7ger-8gb-240gb-ssd-novo-_JM\n> E uma impressora. Recomendamos:\n- Bematech MP-4200TH;\n- Elgin i8 ou i9;\n- Control ID - Print ID;\n- Epson TM-T20 ou TM-T20X (Epson tem suporte de sábado até 20h, é uma vantagem)."}],
+
+["Pagamentos","Pagamentos online (PIX)",{m:"Nosso PIX online, em parceria com o Banco do Brasil, conta com tecnologia antifraude que garante total segurança nas vendas. Os pagamentos são confirmados automaticamente, evitando golpes e eliminando a necessidade de conferência manual. Com a intermediação da BeeFood, o repasse é feito em até 2 dias úteis, com taxa de apenas 1%!\nE para pagamentos por cartão, temos parceria com o Mercado Pago, oferecendo taxas exclusivas para nossos clientes."}],
+["Pagamentos","Mercado Pago",{m:"Temos integração com o Mercado Pago para pagamento via cartão de crédito online. As taxas são definidas diretamente com eles, de forma transparente e segura."}],
+
+["Gestão e fiscal","Sobre o caixa",{m:"Fechamento de caixa seguro e prático: o sistema permite que o funcionário visualize os produtos e formas de pagamento sem acessar os valores, garantindo o fechamento às cegas. Além disso, a abertura e o fechamento de caixa são feitos de forma rápida e intuitiva."}],
+["Gestão e fiscal","Sobre o financeiro",{m:"Pra te ajudar na parte financeira, o sistema conta com:\nControle de contas a pagar e a receber\nRelatórios financeiros completos pra acompanhar seu caixa de perto\nEmissão de Cupom Fiscal Eletrônico (CF-e SAT), garantindo conformidade com a legislação"}],
+["Gestão e fiscal","Sobre o estoque",{m:"Hoje, nosso sistema conta com um módulo de estoque, onde você pode realizar todo o controle dos seus produtos. Quando um pedido é importado de um Marketplace, como o iFood, o sistema faz a baixa automática do estoque internamente.\nPor exemplo: se você tem 2 latas de Coca-Cola cadastradas e um pedido é recebido pelo iFood, o estoque dentro do BeeFood passará automaticamente para 1 (ou 0, dependendo da quantidade vendida). O único ponto é que essa atualização ainda não é sincronizada com os demais Marketplaces.\nOu seja, se você também vende pelo 99Food, o estoque exibido lá continuará o mesmo até que seja atualizado diretamente na plataforma.\nEstamos trabalhando para implementar essa comunicação entre os Marketplaces, para que a atualização de estoque seja feita de forma automática em todos eles."}],
+["Gestão e fiscal","Lançar compras e pagamentos por categoria",{m:"Sim, é possível lançar as compras por categoria dentro do sistema. Essa funcionalidade facilita o controle de estoque, a análise de custos e a organização financeira do negócio.\nAlém disso, o sistema permite gerar relatórios mais detalhados por categoria, proporcionando uma visão mais clara da operação e auxiliando na tomada de decisões estratégicas."}],
+["Gestão e fiscal","Conciliação bancária",{m:"Atualmente, o sistema não possui uma funcionalidade automatizada de conciliação bancária. No entanto, é possível cadastrar sua conta bancária na plataforma e realizar a conferência das vendas manualmente.\nAlém disso, o sistema permite filtrar informações por período, verificar pagamentos recebidos e acompanhar pendências financeiras, facilitando o controle e a gestão do fluxo financeiro."}],
+["Gestão e fiscal","Emissão de nota fiscal (NFC-e)",{m:"Temos um módulo híbrido de emissão de nota fiscal, onde você decide no momento da venda se quer ou não emitir. Tudo de forma prática e flexível.\n\nExtra:\n➡️ Em São Paulo, trabalhamos com NFC-e e NF-e, e o melhor: você não precisa mais do equipamento SAT com o nosso sistema.\n➡️ No Ceará, a emissão é feita via NFC-e e NF-e, usando o equipamento MFe.\n🛰️ O MFe é parecido com o SAT, mas conta com localização via GPS, trazendo ainda mais controle.",n:"Atenção SDR: DDD 47, 48 e 49 (Santa Catarina) não têm emissão fiscal homologada."}],
+["Gestão e fiscal","ME ou MEI",{m:"MEI: não é obrigatório emitir nota fiscal (NFC-e).\nME: pode emitir, caso queira utilizar essa função."}],
+
+["Equipamentos","Sem computador/notebook",{m:"Pergunto porque, para aproveitar ao máximo as principais funcionalidades do sistema, é necessário utilizar um computador ou notebook com sistema operacional Windows.\nVocê já tem uma previsão de quando pretende adquirir um?"}],
+["Equipamentos","Impressoras sugeridas",{m:"Recomendamos esses modelos e marcas de impressoras:\n- Bematech MP-4200TH;\n- Elgin i8 ou i9;\n- Epson TM-T20 ou TM-T20X (Epson tem suporte de sábado até 20h, é uma vantagem)."}],
+
+["Mensagens prontas","Acessar o sistema",{m:"Se ainda não fez o cadastro do seu estabelecimento, é só acessar este link e se cadastrar:\n👉 https://beefood.app/cadastro\nLembrando que o sistema não precisa ser instalado, você acessa ele pelo navegador mesmo.\n💻 https://beefood.app/login"}],
+["Mensagens prontas","Leads que não lembram o acesso",{m:"Obrigada por aguardar!\nSegue abaixo seu e-mail de login:\n🔐 Login: fulano@taltaltaltal.com\nSe não lembrar da senha, é só redefinir por aqui:\n👉 https://app.beefood.com.br/alterar-senha"}],
+["Mensagens prontas","Iniciou a parceria",{m:"🎉 Bem-vindo(a) à BeeFood! Muito feliz em ter você com a gente.\nSeu cadastro já foi enviado e nossa equipe de Onboarding vai entrar em contato em breve para pedir algumas informações (cardápio, logo, etc.). Enquanto isso, preencha este link para agilizar:\n👉 https://www.cognitoforms.com/BeeFood2/BoasVindas\nDados de acesso:\n🔑 Login:\n🔑 Senha provisória:\n📲 Suporte exclusivo via WhatsApp: https://api.whatsapp.com/send?phone=551532340779\nou salve o número (15) 3234-0779.\n▶️ Conheça também nosso canal no YouTube: https://www.youtube.com/@beefood-sistema-restaurantes\nObrigado por escolher a BeeFood! 🐝"}],
+["Mensagens prontas","Revenda | parceria",{m:"Para parcerias com a BeeFood, você pode encaminhar sua proposta diretamente ao responsável pela área:\nRafael Muscari\n📞 (11) 91066-9820\n📧 rafael.muscari@beetech.com.br\nTambém é possível acessar mais informações pelo link abaixo:\nhttps://beefood.com.br/parceiros/\nAgradecemos o seu interesse e desejamos um ótimo dia!"}]
+];
+
+const FAQ=[
+["Nosso sistema é white label?",{m:"Nossa plataforma não é uma solução White Label. Todo o sistema de gestão possui a identidade da BeeFood, incluindo a marca e demais informações da plataforma.\nPor outro lado, o Cardápio Digital oferece uma experiência semelhante à de uma White Label. Nele, é possível personalizar diversos elementos para que fique com a identidade do seu estabelecimento, como:\n• Domínio próprio\n• Logotipo da empresa\n• Nome do estabelecimento\n• Descrições, categorias e demais informações do cardápio.\nOu seja, para o cliente final, o cardápio pode ser apresentado com a identidade da sua marca, enquanto o sistema de gestão continua sendo a plataforma BeeFood.\nCaso tenha alguma dúvida sobre as possibilidades de personalização, ficaremos à disposição para explicar em mais detalhes."}],
+["Integração com a máquina da Stone (Stone Code)",{m:"Fulano, vou te explicar como funciona a integração com a Stone. 😊\n📱 Aplicativo do Garçom\nCom o Aplicativo do Garçom, é possível lançar pedidos em mesas, comandas ou diretamente para o cliente, inclusive em mesas avulsas.\nO aplicativo funciona tanto em celulares Android quanto nas maquininhas POS da Stone, enviando os pedidos automaticamente para a cozinha, tornando o atendimento mais rápido, organizado e eficiente.\n📌 Como utilizar na POS da Stone\nPara habilitar o aplicativo na maquininha Stone, precisamos das seguintes informações:\nCNPJ do estabelecimento;\nFaturamento da empresa;\nStone Code da máquina POS.\nCom esses dados, realizamos a solicitação da integração.\n📲 Instalação no celular\nAndroid: https://play.google.com/store/apps/details?id=com.beetechappgarcom&hl=pt_BR\niPhone: O acesso é realizado pelo navegador Safari, sem necessidade de instalar um aplicativo.\nEsclareci sua dúvida? 😊",n:"Observação interna: se o cliente informar os dados e quiser continuar, encaminhe o contato do suporte."}],
+["O que é Stone Code?",{m:"Esse código é utilizado para que os clientes consigam realizar a integração com o App do Garçom 😉",n:"A Fran e o Rafael conseguem fazer essa liberação, mas antes verifique:\n1️⃣ Se o lead já possui a maquininha POS\n2️⃣ Se já tiver, oriente a entrar em contato com o suporte para realizar a integração\n3️⃣ Caso ainda não tenha, envie o link de cadastro da Stone: https://partnerhub.stone.com.br/#/lp-client/beefood---sistema-para-restaurantes"}],
+["Onde localizar o Stone Code",{m:"1- Abra o aplicativo Stone.\n2- Clique em Perfil e vá em Taxas e Tarifas.\n3- Seu Stonecode aparecerá logo abaixo do nome do seu estabelecimento"}],
+["Conciliação bancária",{m:"Sobre a conciliação bancária: trata-se do processo de cruzar as vendas realizadas com os valores recebidos nos extratos bancários, permitindo conferir se todos os recebimentos foram creditados corretamente.\nNo momento, a BeeFood ainda não possui essa funcionalidade, mas está na nossa linha de desenvolvimento."}],
+["CMV",{m:"No momento não temos o cálculo de CMV, porém o sistema conta com a funcionalidade de ficha técnica, onde você consegue acompanhar o custo dos produtos e o valor de venda com mais controle.\nAlém disso, a partir do plano Rainha 👑, você também terá acesso ao módulo fiscal, com recursos como DRE e importação de XML 😉"}],
+["Nosso sistema é do servidor da Amazon?",{m:"Sim! Nosso servidor é hospedado na Amazon Web Services (AWS), uma das maiores e mais confiáveis infraestruturas de hospedagem em nuvem do mundo, garantindo segurança, estabilidade e alta disponibilidade para a operação do sistema."}],
+["Pagamentos anuais",{m:"O pagamento anual já possui 5% de desconto 😉\nNessa modalidade, o valor é cobrado à vista no cartão.\nCaso precise cancelar ou solicitar estorno, isso pode ser feito dentro do prazo de 7 dias, conforme o direito do consumidor."}],
+["Tem como tirar o pedido pela conversa com o robô?",{m:"Sim 😊\nO cliente consegue finalizar o pedido diretamente pelo chat.\nEm relação ao pagamento, é possível utilizar tanto o PIX próprio quanto o PIX Online.\nNo caso do PIX Online, o robô envia automaticamente o link de pagamento para o cliente finalizar o pedido 😉"}],
+["Quanto tempo para repasse?",{m:"Receber na hora, 14 dias ou 28 dias. Mas cada uma tem uma taxa."}],
+["O sistema faz busca de NF emitidas no CNPJ?",{m:"De momento não 😊\nO nome dessa funcionalidade é Guardião XML.\nCom ela, o cliente consegue carregar/importar os arquivos XML das notas para dentro do sistema. Essa função estará disponível em breve 😉\nO XML são as notas fiscais de compras realizadas no CNPJ da empresa, por exemplo quando o estabelecimento solicita colocar o CNPJ na nota ao comprar produtos ou mercadorias."}],
+["Como funciona o sistema + totem",{m:"Vamos lá 😊\nTemos o Sistema Geral, o Sistema do Totem e toda a nossa equipe para te auxiliar no processo:\n🔹 Sistema Geral:\nÉ onde você recebe os pedidos e faz toda a gestão do restaurante, como controle de estoque, ficha técnica, cardápios, relatórios e muito mais.\n🔹 Sistema do Totem:\nO valor é cobrado por equipamento.\nImportante: não é possível contratar apenas o sistema do totem sem o sistema geral.\n🔹 Suporte e Implantação:\nVocê terá treinamento, suporte de segunda a segunda e uma equipe responsável por cadastrar toda a plataforma para você 😉\nE essa parte consigo te entregar gratuitamente."}],
+["Tem CRM?",{m:"Sim 😊\nSeria o cadastro dos clientes dentro da plataforma.\nE para completar, também contamos com integração com o Repediu 😉"}],
+["O que é SSD?",{m:"SSD é a sigla para Solid State Drive 😊\nÉ um tipo de armazenamento usado em computadores e notebooks, responsável por guardar arquivos, sistema e programas — como se fosse o “HD”, porém muito mais rápido.\n✅ Liga o computador mais rápido\n✅ Abre sistemas e programas com mais velocidade\n✅ Melhor desempenho no dia a dia\n✅ Mais silencioso e resistente que um HD comum 😉",n:"Quantos de SSD precisa? Recomendamos SSD de 240GB para melhor desempenho do sistema. Também é possível usar 128GB."}],
+["Pixel / Meta",{m:"Fulano, vou te explicar como funciona a integração com o Pixel. 😊\n📊 Integração com o Pixel (Meta e Google)\nA BeeFood permite integrar o Pixel da Meta (Facebook e Instagram) e também as ferramentas do Google, possibilitando o acompanhamento das ações realizadas pelos clientes no seu Cardápio Digital.\nCom essa integração, você consegue registrar eventos como:\nVisualização do cardápio;\nAdição de produtos ao carrinho;\nInício da finalização da compra;\nCompra realizada, entre outros.\nEsses dados ajudam a otimizar suas campanhas de anúncios, permitindo que as plataformas entendam melhor o comportamento dos clientes e entreguem seus anúncios para pessoas com maior chance de compra.\nEsclareci sua dúvida? 😊",n:"A integração não mostra o retorno exato da campanha, como por exemplo: “investi R$1.000 e tive 50 clientes”."}],
+["Limitação no agendamento",{m:"Sim 😊\nÉ possível limitar a quantidade de dias disponíveis para que o cliente realize pedidos agendados dentro da plataforma 😉"}],
+["Agendamento: dá para limitar pedidos por hora?",{m:"Sim 😊\nO sistema permite limitar a quantidade de pedidos por horário.\nExemplo: receber até 3 pedidos dentro de 1 hora.\nPorém, o controle é feito pela quantidade de pedidos e não pela quantidade de itens dentro deles.\nOu seja, se o limite for 2 açaís por pedido e um cliente fizer um pedido com 4 açaís, o sistema não consegue bloquear automaticamente esse controle 😉"}],
+["Taxa da máquina para ser cobrada do cliente",{m:"Não é possível cobrar a taxa da maquininha diretamente do cliente 😊\nO que pode ser feito é ajustar/arredondar o valor dos produtos e, na parte financeira/recebimentos, configurar a porcentagem referente à taxa da maquininha 😉"}],
+["Contato do Mercado Pago",{m:"Link para contato com o Mercado Pago, tem o contato 0800 e o fale conosco direcionado para o atendimento por WhatsApp:\nhttps://www.mercadopago.com.br/sac-pin/public-info"}],
+["Tem nota fiscal para Santa Catarina?",{m:"📍 Sobre a homologação em Santa Catarina:\nAtendemos normalmente todas as regiões, com exceção dos DDDs 47, 48 e 49 😉"}],
+["Se o cliente quiser mudar de sistema",{m:"Se um dia você decidir migrar para outro sistema, a carteira de clientes pode ser disponibilizada?\nSim 😊\nÉ possível realizar a disponibilização/exportação da carteira de clientes 😉"}],
+["Aplicativos de entrega parceiros",{n:"Agilizone e Foody Delivery são empresas de roteirização de entregas.\nPick n Go! e Let's Express são empresas que fornecem motoboys."}],
+["Regiões onde a Let's Delivery opera",{m:"A Let's Delivery atende atualmente nas cidades de:\n• Sorocaba\n• Votorantim\n• Limeira\n• Jundiaí\n• São Roque\n• Itu\n• Salto\n• Indaiatuba\n• Itatiba\n• Itapetininga\n• Bragança Paulista 😉"}],
+["Expectativa de retorno do investimento",{m:"O retorno do investimento pode variar conforme o volume de pedidos e o engajamento da operação 😊\nMas a maioria dos nossos clientes percebe resultados já nos primeiros meses, relatando em média até 20% de aumento nos pedidos, além de mais eficiência e menos erros na operação 😉"}],
+["Pagar pela API do Google",{m:"A criação da conta e da chave de API é gratuita 😊\nPorém, o Google solicita o cadastro de um cartão internacional por questão de segurança.\nVocê recebe US$300 de crédito por 90 dias e, após esse período, ganha US$200 mensais para utilização no Google Maps, o que equivale a cerca de 28.500 requisições 😉\nSó haverá cobrança caso ultrapasse esse limite."}],
+["Recebimento por vale-refeição no totem",{m:"Para aceitar vale-refeição no totem, é necessário que a dona do restaurante tenha essa forma de pagamento liberada junto à adquirente/maquininha TEF 😊\nOu seja, o cliente precisa confirmar diretamente com o banco ou operadora da maquininha se essa função está habilitada 😉"}],
+["Custos fixos",{m:"Dentro do sistema existe um campo para cadastrar os custos fixos dos produtos 😊\nAlém disso, também contamos com a função de contas a pagar e receber, onde você consegue organizar despesas mensais, como:\n✅ Fornecedores\n✅ Funcionários\n✅ Aluguel\n✅ Entre outros custos da operação 😉"}]
+];
+
+const PRATICAS=[
+["Comunicação com o lead",[
+ ["Diminutivo NÃO!","No comercial, a forma como nos comunicamos influencia diretamente na percepção de valor e credibilidade da empresa.\nO uso excessivo de diminutivos pode transmitir insegurança, informalidade exagerada e até reduzir a importância do que está sendo apresentado. Palavras como “sisteminha”, “planinho”, “rapidinho” ou “taxinha” podem fazer o cliente perceber menos profissionalismo.\nSeja simpático, mas sem diminuir a percepção da solução oferecida.",1],
+ ["Tática do espelhamento","Se o lead enviar áudio, responda com áudio. Se enviar texto, responda com texto.\nUse o nome do lead o máximo possível durante a conversa. Isso cria proximidade e conexão."],
+ ["Ouvir mais o lead","A prioridade é deixar o lead falar mais. Quanto mais você escuta, melhor entende as necessidades e expectativas, e os closers conseguem explicar os planos de forma mais precisa."],
+ ["Objetividade nas mensagens","Leads geralmente não leem textos longos. Seja o mais breve possível e vá direto ao ponto, destacando o que é mais importante."],
+ ["Flexibilidade: personalização e lógica","Você tem liberdade para ajustar as mensagens, desde que mantenha a lógica e o objetivo da comunicação. Seja menos “copia e cola”, mas fiel à mensagem original."],
+ ["Verifique o histórico antes de enviar","Antes de mandar mensagem, olhe o histórico para entender o que foi falado. Baseie sua resposta na última mensagem enviada."],
+ ["Responder conforme a mensagem do e-mail","Responda sempre de acordo com o que o lead deixou no e-mail, de forma personalizada."],
+ ["Tom de voz adequado","Falar alto é diferente de gritar. Mantenha a voz clara e audível, sem exagerar no volume."],
+ ["Agilidade e proatividade","SDRs e comerciais devem responder rápido e ser proativos para não perder oportunidades.\nVendedores Carnívoros são mais agressivos, buscando fechar rápido. Vendedores Herbívoros são mais calmos e consultivos, construindo relacionamento antes de fechar. Saiba equilibrar os dois estilos conforme a situação."]
+]],
+["Organização e padrões",[
+ ["Padrão de nomenclatura do cliente","Sempre use o primeiro nome, o ID do cliente e o nome do estabelecimento em letras maiúsculas.\nCerto: José 23464 PALADAR CARIOCA\nErrado: Jose 23464 paladar carioca",1],
+ ["Status de tarefas e apresentações","Ao agendar uma apresentação, tarefa ou ligação, coloque “✔️” quando for confirmada.\nQuando for realizada ou concluída, coloque “✔️✔️”."],
+ ["Padronização entre SDRs","Mantenha um padrão nas mensagens para que outro colega possa continuar o atendimento. Quando o lead enviar áudio, registre no histórico pelo menos um resumo do conteúdo."],
+ ["Anotação obrigatória no Bitrix","Sempre que passar um lead para outro closer, deixe uma anotação detalhada no comentário do Bitrix, mantendo o card na etapa correta.",1],
+ ["Tarefas em ordem","Mantenha suas tarefas organizadas para saber exatamente o que precisa ser feito e não deixar nada para trás."],
+ ["Leads sem resposta","Sempre que um lead ficar sem resposta, avise o colega disponível para dar continuidade."],
+ ["Pesquisa e resolução de dúvidas","Procure primeiro a resposta neste site, na Ajuda ou no Sistema. Se não encontrar ou estiver demorando, peça mais detalhes ao lead."]
+]],
+["Metas e rotina",[
+ ["Meta de calls: 30 ou mais (quarta a sexta)","De quarta a sexta a meta é 30 calls ou mais. Segundas e terças o foco é mais chat, mas nada impede ligações se o movimento estiver fraco.",1],
+ ["Meta de apresentações","Agendamos apresentações especialmente para clientes que preferem ver o sistema antes de decidir a compra."],
+ ["Acompanhamento de apresentações e leads","Sempre que houver uma apresentação confirmada, verifique quantos leads chegaram no dia e se o bot está funcionando."],
+ ["Canal de comunicação","Envie “Bom dia” apenas quando começar a trabalhar. Avise quando sair para almoçar e quando for embora."],
+ ["Tarefas de final de dia","Teste o bot, atualize a time e feche chamados e tickets pendentes. No fim do expediente, envie “Boa noite” no canal."],
+ ["Aprendizado contínuo","Assista a vídeos novos e tutoriais para ficar em dia com as ferramentas e os processos."]
+]],
+["Ferramentas",[
+ ["Jivo: abordagem no chat","Não digite mensagens longas no Jivo. Sempre que possível, peça o WhatsApp.\nSe o lead fez uma pergunta, responda direto e sugira: “Me passa seu Wpp para explicar melhor?”"],
+ ["Não atribuídas: centralização de leads","É onde chegam os leads de chamados anteriores e os novos. Monitore esse espaço para que todos sejam atendidos."]
+]]
+];
+
+const BITRIX=[
+ ["LEADS","Sem nenhum contato (sem mensagem e sem ligação). Prioridade: contatar o mais rápido possível.","hot"],
+ ["2 GDC","2º dia tentando contato sem resposta. Tente uma nova abordagem."],
+ ["3 GDC","3º dia tentando contato, ainda sem resposta."],
+ ["4 GDC","4º dia tentando contato sem resposta."],
+ ["5 GDC","5º dia sem resposta: finalize o ciclo de follow-up."],
+ ["GELADEIRA","Passou dos 5 GDC e não retornou. Trabalhamos com disparo.","cold"]
+];
+
+const REGRAS=[
+ ["Código afiliado danielvilela","Cards no Bitrix com o código afiliado danielvilela: NÃO chame o lead! Transfira o card para o responsável Rafael Muscari.",1],
+ ["Uso de celular pessoal","Proibido na área de trabalho."],
+ ["Discord","É nossa ferramenta de convívio de trabalho. O acesso via celular está PROIBIDO. O “Bom dia” deve ser enviado após o início do trabalho e o preenchimento da Timesheet."],
+ ["Horários","Entradas mais cedo ou saídas mais tarde precisam ser previamente autorizadas e/ou justificadas."],
+ ["Pausas","Não devem ser feitas na primeira ou na última hora de trabalho. Evite pausas nos horários de alta demanda. Sair antes das 17h30."],
+ ["RH – Lavinia Carmo","Assuntos de RH devem ir ao setor responsável. Não trate desses assuntos com os diretores."],
+ ["Férias","Peça com 30 dias de antecedência.\nApós 1 ano você tem direito a 15 dias de férias: pode tirar um dia, uma semana ou tudo de uma vez.\nNo mês do seu aniversário você tem direito a um dia de folga (dentro do mês). Verifique com a Lavinia do Financeiro."],
+ ["Sair mais cedo ou faltar","Verifique com a Lavínia (Financeiro) e avise sua supervisora. A liberação é com o Financeiro, mas sua líder precisa ficar ciente."],
+ ["Notas fiscais","Devem ser emitidas logo após o recebimento do salário."],
+ ["Leads avulsos","Sempre que receber um lead avulso, coloque na planilha de “leads avulsos”."],
+ ["Dias de ligação","Segunda e terça são dias fracos. A partir de quarta começamos a ligar."],
+ ["Resumo antes do closer","Não repita verbalmente o que já está no resumo das anotações internas. Todos devem ler o resumo antes de continuar com o lead. Isso evita redundância e mantém o foco dos closers."],
+ ["Perfume","Evite usar perfume dentro do banheiro ou da sala, porque o ambiente é fechado e sem circulação de ar. Use os banheiros externos, inclusive o ao lado da cozinha."]
+];
+
+const PLANOS=[
+ {n:"Zangão",i:"🐝🐝",t:"Mais automação e controle",anual:"R$ 1.680,00",pix:"R$ 1.596,00",x:"12x de R$ 140,00",mensal:"R$ 200,00",
+  f:["Presencial (mesas/comandas), Delivery e PDV","Integração iFood, AIQFome, UaiRango, DeliveryMuch, Rappi e Americanas","WhatsApp: notificações, respostas e inteligência artificial","Aplicativo Garçom","Impressão automática","Gestão de estoque e insumos","Cardápio digital delivery e presencial","Gestão financeira e cartão"]},
+ {n:"Rainha",i:"👑🐝",t:"Gestão avançada e fidelização",anual:"R$ 2.400,00",pix:"R$ 2.280,00",x:"12x de R$ 200,00",mensal:"R$ 300,00",inh:"Tudo do Zangão, mais:",
+  f:["Emissão fiscal sem limite (NFCe, NFe e SAT)","Fechamento fiscal automático","WhatsApp: disparo de campanhas e promoções","Exibir e ocultar produtos do cardápio automaticamente","KDS: monitor de preparos","Relatórios avançados","Mais usuários e usuários para aplicativos"]},
+ {n:"BeeFood",i:"🚀🐝",t:"O mais completo de todos",anual:"R$ 3.240,00",pix:"R$ 3.078,00",x:"12x de R$ 270,00",mensal:"R$ 400,00",inh:"Tudo do Rainha, mais:",top:1,
+  f:["Usuários sem limite","Cardápio digital no tablet (autoatendimento)","WhatsApp: atendente virtual, retirar pedidos pelo chat","Integração Google Food Menu","Aplicativo para entregador","Relatórios exclusivos","Treinamento e suporte priorizado"]}
+];
+const PLANO_MSGS=[
+ ["Sobre os planos (mensagem)",{m:"🐝 Plano Zangão\n🔹 Anual: R$ 1.680,00 → com 5% de desconto no Pix sai por R$ 1.596,00\nOu em até 12x de R$ 140,00 sem juros no cartão de crédito.\n🔹 Mensal: R$ 200,00 + taxa de implantação de R$ 150,00 (primeiro mês).\n\n👑 Plano Rainha\n🔹 Anual: R$ 2.400,00 → com 5% de desconto no Pix sai por R$ 2.280,00\nOu em até 12x de R$ 200,00 sem juros no cartão de crédito.\n🔹 Mensal: R$ 300,00 + taxa de implantação de R$ 150,00 (primeiro mês).\n\n🍯 Plano BeeFood (completo)\n🔹 Anual: R$ 3.240,00 → com 5% de desconto no Pix sai por R$ 3.078,00\nOu em até 12x de R$ 270,00 sem juros no cartão de crédito.\n🔹 Mensal: R$ 400,00 + taxa de implantação de R$ 150,00 (primeiro mês)."}],
+ ["Formas de pagamento do plano",{m:"💳 Plano anual: pode ser pago à vista via Pix ou cartão, ou parcelado em até 12x sem juros no cartão de crédito.\n📅 Plano mensal: você escolhe entre Pix, cartão ou boleto."}],
+ ["Período grátis",{m:"Hoje a BeeFood não possui mais plano gratuito. Em vez disso, oferecemos 10 dias corridos de teste para você conhecer o sistema.\nApós esse período, você escolhe o plano ideal para o seu negócio. Se você trabalha apenas com delivery, temos um plano específico para sua operação, para que você pague apenas pelas funcionalidades que realmente precisa. 😊"}],
+ ["Pagamentos anuais: desconto e estorno",{m:"O pagamento anual já possui 5% de desconto 😉\nNessa modalidade, o valor é cobrado à vista no cartão.\nCaso precise cancelar ou solicitar estorno, isso pode ser feito dentro do prazo de 7 dias, conforme o direito do consumidor."}]
+];
+
+/* ====================== APP ====================== */
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const linkify=s=>esc(s).replace(/https?:\/\/[^\s<]+/g,u=>{let h=u;try{const x=new URL(u.replace(/&amp;/g,'&'));h=x.hostname.replace(/^www\./,'')+(x.pathname.length>1?x.pathname.slice(0,28)+(x.pathname.length>28?'…':''):'')}catch(e){}return `<a href="${u}" target="_blank" rel="noopener">${h}</a>`});
+const clean=t=>t.replace(/^(\d\uFE0F?\u20E3|\d-)\s*/,'');
+const norm=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const hl=(html,q)=>{if(!q)return html;const re=new RegExp("("+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi");return (">"+html).replace(/(>[^<]*)/g,m=>m.replace(re,"<mark>$1</mark>")).slice(1)};
+
+const ROUTES=[
+ {id:"inicio",label:"Início",grp:null},
+ {id:"delivery",label:"Roteiro Delivery",grp:"Prospecção"},
+ {id:"presencial",label:"Roteiro Presencial",grp:"Prospecção"},
+ {id:"planos",label:"Planos e preços",grp:"Consulta"},
+ {id:"funcionalidades",label:"Funcionalidades",grp:"Consulta",n:KB.length},
+ {id:"duvidas",label:"Dúvidas gerais",grp:"Consulta",n:FAQ.length},
+ {id:"praticas",label:"Boas práticas SDR",grp:"Time"},
+ {id:"regras",label:"Regras BeeFood",grp:"Time"}
+];
+const state={route:"inicio",q:"",cat:"Todas",flow:{delivery:{cur:"s01",ans:{}},presencial:{cur:"p01",ans:{}}}};
+
+function nav(){let g=null,h="";ROUTES.forEach(r=>{if(r.grp&&r.grp!==g){g=r.grp;h+=`<div class="grp">${g}</div>`}h+=`<a href="#${r.id}" class="${state.route===r.id&&!state.q?'on':''}">${r.label}${r.n?`<span class="n">${r.n}</span>`:''}</a>`});$("#nav").innerHTML=h}
+
+function copyBtn(id){return `<button class="btn" type="button" data-copy="${id}">Copiar</button>`}
+const COPY={};let cid=0;
+function kItem(title,o,tag,q,open){
+  let body="";
+  if(o.n)body+=`<div class="note"><b>Para o SDR:</b> ${hl(linkify(o.n),q)}</div>`;
+  if(o.m){const id="c"+(cid++);COPY[id]=o.m;body+=`<div class="chat"><div class="bubble">${hl(linkify(o.m),q)}</div>${copyBtn(id)}</div>`}
+  return `<details class="k"${open?' open':''}><summary>${tag?`<span class="tag">${tag}</span>`:''}${hl(esc(title),q)}</summary><div class="kbody">${body}</div></details>`;
+}
+function head(eb,t,lede,extra=""){return `<div class="ph"><div><div class="eyebrow">${eb}</div><h1>${t}</h1>${lede?`<p class="lede">${lede}</p>`:''}</div>${extra}</div>`}
+
+/* views */
+function vInicio(){
+ return `<section class="hero"><div>
+   <div class="eyebrow" style="color:var(--honey)">Olá! Seja muito bem-vindo(a)! 💛🐝</div>
+   <h1 style="margin-top:8px">Tudo o que o SDR precisa para <em>responder bem</em> cada lead.</h1>
+   <p>Este site foi criado para te ajudar a entender como responder aos leads de forma eficaz e como aplicar esse conhecimento na prática. Aqui você aprende as melhores abordagens e tira suas dúvidas sobre o processo. Fique à vontade para consultar!</p></div>
+   <div class="facts">
+    <div class="fact"><b>30+</b><span>calls por dia, de quarta a sexta</span></div>
+    <div class="fact"><b>10 dias</b><span>de teste grátis para o lead</span></div>
+    <div class="fact"><b>10h–22h</b><span>suporte de segunda a sábado</span></div>
+    <div class="fact"><b>5 GDC</b><span>tentativas antes da Geladeira</span></div>
+   </div></section>
+  <div class="cards">
+   <a class="card" href="#delivery"><b>Roteiro Delivery</b><span>Qualificação passo a passo, com resumo automático.</span></a>
+   <a class="card" href="#presencial"><b>Roteiro Presencial</b><span>Mesas (garçons) e Balcão (PDV).</span></a>
+   <a class="card" href="#planos"><b>Planos e preços</b><span>Zangão, Rainha e BeeFood lado a lado.</span></a>
+   <a class="card" href="#funcionalidades"><b>Funcionalidades</b><span>${KB.length} explicações prontas para enviar.</span></a>
+   <a class="card" href="#duvidas"><b>Dúvidas gerais</b><span>${FAQ.length} respostas para perguntas frequentes.</span></a>
+   <a class="card" href="#praticas"><b>Boas práticas e Bitrix</b><span>Como falar com o lead e mover os cards.</span></a>
+  </div>
+  <div class="two">
+   <div class="box"><h2>Sobre a BeeFood</h2><div class="prose">
+    <p>A BeeFood possui mais de 5 anos de atuação no mercado, iniciando sua trajetória sob o nome BeeTech. Ao longo do tempo, a empresa passou por uma evolução estratégica, direcionando seu foco exclusivamente para o setor alimentício.</p>
+    <p>Com essa especialização, a BeeFood passou a desenvolver soluções cada vez mais alinhadas às necessidades de restaurantes e operações de delivery, consolidando sua expertise no segmento e oferecendo uma plataforma eficiente e orientada a resultados.</p>
+    <p>Tudo começou com a visão de criar um sistema que realmente resolvesse os problemas reais dos restaurantes. Com foco em praticidade e resultados, a plataforma centraliza pedidos de balcão e marketplaces como iFood, 99Food e Keeta, proporcionando mais controle, agilidade e redução de erros no dia a dia.</p></div></div>
+   <div class="box"><h2>Para que serve este site</h2><div class="prose">
+    <p>Serve principalmente para você entender o que cada funcionalidade faz. Além disso, ele ajuda diretamente no processo de prospecção, tornando o trabalho mais eficiente e informativo.</p>
+    <p>Use a busca no topo para achar qualquer assunto: ela procura em funcionalidades, dúvidas, boas práticas e regras ao mesmo tempo.</p>
+    <p>Site sempre em atualização. Se procurou alguma informação e não achou, solicite contato com a Nicolly.</p></div></div>
+  </div>`}
+
+function vFlow(key){
+ const F=FLOWS[key],S=state.flow[key],other=key==="delivery"?"presencial":"delivery";
+ const label={"@delivery":"Roteiro Delivery","@presencial":"Roteiro Presencial"};F.steps.forEach(s=>label[s.id]=`${s.code} · ${s.title}`);
+ const steps=F.steps.map(s=>{const id="c"+(cid++);COPY[id]=s.msg;return `
+  <section class="step${s.id===S.cur?' active':''}" id="${s.id}">
+   <div class="step-head"><span class="code mono">${s.code}</span><h2>${s.title}</h2><span class="when">${s.when}</span></div>
+   <div class="chat"><div class="bubble">${esc(s.msg)}</div>${copyBtn(id)}</div>
+   ${s.note?`<div class="note">${s.note}</div>`:""}
+   ${s.extra?(()=>{const x="c"+(cid++);COPY[x]=s.extra[1];return `<div class="opts"><div class="lbl">${s.extra[0]}</div><div class="chat"><div class="bubble">${esc(s.extra[1])}</div>${copyBtn(x)}</div></div>`})():""}
+   ${s.opts?`<div class="opts"><div class="lbl">Resposta do lead</div><div class="opt-list">${s.opts.map((o,i)=>`
+     <button class="opt${S.ans[s.key]===clean(o[0])?' sel':''}" type="button" data-flow="${key}" data-step="${s.id}" data-i="${i}">
+     <span class="a">${o[0]}</span><span class="go">→ ${label[o[1]]}</span></button>`).join("")}</div></div>`:""}
+   ${s.free?`<div class="opts"><div class="lbl">Anotar resposta</div><div class="chat">
+     <input class="field" id="f-${s.id}" value="${esc(S.ans[s.key]||'')}" placeholder="Ex.: ${s.free}">
+     <button class="btn primary" type="button" data-flow="${key}" data-next="${s.id}">Seguir → ${label[s.next]}</button></div></div>`:""}
+  </section>`}).join("");
+ const map=F.steps.map(s=>`<li><a href="#${s.id}" data-flow="${key}" data-jump="${s.id}" class="${s.id===S.cur?'cur':''}"><span class="code mono">${s.code}</span><span class="${s.key&&S.ans[s.key]?'done':''}">${s.title}</span></a></li>`).join("");
+ const sum=F.keys.filter(k=>k!=="Previsão de PC"||S.ans[k]).map(k=>`<dt>${k}</dt><dd class="${S.ans[k]?'':'empty'}">${S.ans[k]?esc(S.ans[k]):'—'}</dd>`).join("");
+ return head("Prospecção",F.title,F.lede,`<a class="btn" href="#${other}">Ir para ${FLOWS[other].title} →</a>`)+
+  `<div class="fgrid"><aside class="fside"><div class="sticky">
+    <div class="panel"><h3>Mapa da conversa</h3><ol class="map">${map}</ol></div>
+    <div class="panel sum"><h3>Resumo para o vendedor</h3><dl>${sum}</dl>
+     <div class="actions"><button class="btn primary" type="button" data-sum="${key}">Copiar resumo</button><button class="btn" type="button" data-reset="${key}">Novo lead</button></div></div>
+   </div></aside><div class="steps">${steps}</div></div>`}
+
+function vPlanos(){
+ const cards=PLANOS.map(p=>`<article class="plan${p.top?' top':''}"><div><h2>${p.i} ${p.n}</h2><div class="tagline">${p.t}</div></div>
+  <div class="price">
+   <div class="row"><span class="k">Anual</span><span><span class="v">${p.anual}</span></span></div>
+   <div class="row"><span class="k">Anual no Pix (−5%)</span><span class="v">${p.pix}</span></div>
+   <div class="row"><span class="k">Cartão</span><span class="s">até ${p.x}<br>sem juros</span></div>
+   <div class="row"><span class="k">Mensal</span><span><span class="v">${p.mensal}</span><div class="s">+ R$ 150,00 de implantação no 1º mês</div></span></div>
+  </div>
+  <ul class="feat">${p.inh?`<li class="inh">${p.inh}</li>`:''}${p.f.map(x=>`<li>${x}</li>`).join("")}</ul></article>`).join("");
+ return head("Consulta","Planos e preços","Valores e o que cada plano inclui. Abaixo, as mensagens prontas para enviar ao lead.")+
+  `<div class="plans">${cards}</div><h2 class="sec-h">Mensagens sobre planos</h2><div class="klist">${PLANO_MSGS.map(([t,o])=>kItem(t,o)).join("")}</div>`}
+
+function vFunc(){
+ const cats=["Todas",...new Set(KB.map(k=>k[0]))];
+ const chips=`<div class="chips">${cats.map(c=>`<button class="chip${state.cat===c?' on':''}" type="button" data-cat="${c}">${c}</button>`).join("")}</div>`;
+ const groups=cats.slice(1).filter(c=>state.cat==="Todas"||state.cat===c).map(c=>{const it=KB.filter(k=>k[0]===c);
+  return `<div class="kgroup"><h2>${c} <span class="c">${it.length}</span></h2><div class="klist">${it.map(k=>kItem(k[1],k[2])).join("")}</div></div>`}).join("");
+ return head("Consulta","Funcionalidades","O que cada funcionalidade faz, com a mensagem pronta para copiar. Orientações internas aparecem em amarelo e não vão para o lead.")+chips+groups}
+
+function vDuvidas(){return head("Consulta","Dúvidas gerais","Respostas para as perguntas que os leads mais fazem.")+`<div class="klist">${FAQ.map(([t,o])=>kItem(t,o)).join("")}</div>`}
+
+function vPraticas(){
+ return head("Time","Boas práticas SDR","Como nos comunicamos com o lead e organizamos o trabalho.")+
+ `<div class="box" style="margin-bottom:26px"><h2>Como funciona o Bitrix</h2><p class="lede" style="margin:0 0 14px">GDC = dia de tentativa de contato. O lead avança uma etapa por dia sem resposta.</p>
+   <div class="pipe">${BITRIX.map(b=>`<div class="pst ${b[2]||''}"><b>${b[0]}</b><span>${b[1]}</span></div>`).join("")}</div>
+   <div class="note" style="margin-top:14px"><b>AQUECIMENTO:</b> leads especiais que já tiveram conversa anterior, mas ainda têm dúvidas. Acompanhe de perto.</div></div>`+
+ PRATICAS.map(([g,it])=>`<h2 class="sec-h">${g}</h2><div class="rules">${it.map(r=>`<div class="rule${r[2]?' alert':''}"><h3>${r[0]}</h3><p>${esc(r[1])}</p></div>`).join("")}</div>`).join("")}
+
+function vRegras(){return head("Time","Regras BeeFood","Regras internas de convivência, horários e processos.")+`<div class="rules">${REGRAS.map(r=>`<div class="rule${r[2]?' alert':''}"><h3>${r[0]}</h3><p>${esc(r[1])}</p></div>`).join("")}</div>`}
+
+function vBusca(q){
+ const nq=norm(q),m=o=>norm(o.join(" ")).includes(nq);
+ const res=[];
+ KB.forEach(k=>{if(m([k[1],k[2].m||"",k[2].n||""]))res.push(kItem(k[1],k[2],k[0],q,true))});
+ PLANO_MSGS.forEach(k=>{if(m([k[0],k[1].m||""]))res.push(kItem(k[0],k[1],"Planos",q,true))});
+ FAQ.forEach(k=>{if(m([k[0],k[1].m||"",k[1].n||""]))res.push(kItem(k[0],k[1],"Dúvida",q,true))});
+ PRATICAS.forEach(([g,it])=>it.forEach(r=>{if(m([r[0],r[1]]))res.push(kItem(r[0],{n:r[1]},"Boa prática",q,true))}));
+ REGRAS.forEach(r=>{if(m([r[0],r[1]]))res.push(kItem(r[0],{n:r[1]},"Regra",q,true))});
+ return head("Busca",`Resultados para “${esc(q)}”`,`${res.length} ${res.length===1?'resultado':'resultados'} em funcionalidades, planos, dúvidas, boas práticas e regras.`)+
+  (res.length?`<div class="klist">${res.join("")}</div>`:`<p class="empty">Nada encontrado. Tente outra palavra ou solicite contato com a Nicolly.</p>`)}
+
+function render(scrollTo){
+ for(const k in COPY)delete COPY[k];cid=0;
+ const q=state.q.trim();
+ const V={inicio:vInicio,delivery:()=>vFlow("delivery"),presencial:()=>vFlow("presencial"),planos:vPlanos,funcionalidades:vFunc,duvidas:vDuvidas,praticas:vPraticas,regras:vRegras};
+ $("#view").innerHTML=q.length>=2?vBusca(q):V[state.route]();
+ const r=ROUTES.find(x=>x.id===state.route);$("#crumb").textContent=q.length>=2?"":(r.grp?r.grp+" · ":"")+r.label;
+ nav();
+ const on=document.querySelector("#nav a.on");on&&on.scrollIntoView({block:"nearest",inline:"nearest"});
+ if(scrollTo){const el=document.getElementById(scrollTo);el&&el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
+}
+function route(){const h=location.hash.slice(1);const r=ROUTES.find(x=>x.id===h);if(r){state.route=r.id;state.q="";$("#q").value="";render();window.scrollTo(0,0)}}
+window.addEventListener("hashchange",route);
+
+function toast(t){const e=$("#toast");e.textContent=t;e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>e.hidden=true,1600)}
+async function copy(text,btn){
+ try{await navigator.clipboard.writeText(text);toast("Copiado");if(btn){const o=btn.textContent;btn.classList.add("ok");btn.textContent="Copiado";setTimeout(()=>{btn.classList.remove("ok");btn.textContent=o},1400)}}
+ catch(e){toast("Selecione o texto e copie com Ctrl+C")}
+}
+function goStep(key,id){state.flow[key].cur=id;render(id)}
+function switchFlow(to,from){state.route=to;const a=state.flow[from].ans["Operação"];if(a)state.flow[to].ans["Operação"]=a;history.replaceState(null,"","#"+to);render();window.scrollTo(0,0);toast("Continue no "+FLOWS[to].title)}
+
+document.addEventListener("click",e=>{
+ const na=e.target.closest("#nav a, .card");if(na&&na.getAttribute("href")==="#"+state.route&&state.q){e.preventDefault();state.q="";$("#q").value="";render();return}
+ const c=e.target.closest("[data-copy]");if(c){copy(COPY[c.dataset.copy],c);return}
+ const cat=e.target.closest("[data-cat]");if(cat){state.cat=cat.dataset.cat;render();return}
+ const o=e.target.closest(".opt[data-flow]");if(o){const key=o.dataset.flow,S=state.flow[key],s=FLOWS[key].steps.find(x=>x.id===o.dataset.step),[txt,nx]=s.opts[+o.dataset.i];
+   S.ans[s.key]=clean(txt);
+   if(s.key==="Dispositivo"&&!/nopc/.test(nx))delete S.ans["Previsão de PC"];
+   if(nx[0]==="@"){switchFlow(nx.slice(1),key);return}
+   goStep(key,nx);return}
+ const n=e.target.closest("[data-next]");if(n){const key=n.dataset.flow,S=state.flow[key],s=FLOWS[key].steps.find(x=>x.id===n.dataset.next),v=$("#f-"+s.id).value.trim();if(v)S.ans[s.key]=v;else delete S.ans[s.key];goStep(key,s.next);return}
+ const j=e.target.closest("[data-jump]");if(j){e.preventDefault();goStep(j.dataset.flow,j.dataset.jump);return}
+ const sm=e.target.closest("[data-sum]");if(sm){const key=sm.dataset.sum,S=state.flow[key];const t=`🐝 Resumo do lead (${FLOWS[key].title})\n`+FLOWS[key].keys.filter(k=>S.ans[k]).map(k=>`• ${k}: ${S.ans[k]}`).join("\n");copy(t,sm);return}
+ const rs=e.target.closest("[data-reset]");if(rs){const key=rs.dataset.reset;state.flow[key]={cur:FLOWS[key].steps[0].id,ans:{}};render(state.flow[key].cur);toast("Pronto para o próximo lead");return}
+});
+let qt;$("#q").addEventListener("input",e=>{clearTimeout(qt);qt=setTimeout(()=>{state.q=e.target.value;render()},150)});
+
+const h0=location.hash.slice(1);if(ROUTES.some(r=>r.id===h0))state.route=h0;
+render();
+</script>
+
+</body></html>

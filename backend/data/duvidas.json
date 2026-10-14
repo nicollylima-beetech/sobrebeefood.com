@@ -1,0 +1,137 @@
+[
+  {
+    "titulo": "Nosso sistema é white label?",
+    "mensagem": "Nossa plataforma não é uma solução White Label. Todo o sistema de gestão possui a identidade da BeeFood, incluindo a marca e demais informações da plataforma.\nPor outro lado, o Cardápio Digital oferece uma experiência semelhante à de uma White Label. Nele, é possível personalizar diversos elementos para que fique com a identidade do seu estabelecimento, como:\n• Domínio próprio\n• Logotipo da empresa\n• Nome do estabelecimento\n• Descrições, categorias e demais informações do cardápio.\nOu seja, para o cliente final, o cardápio pode ser apresentado com a identidade da sua marca, enquanto o sistema de gestão continua sendo a plataforma BeeFood.\nCaso tenha alguma dúvida sobre as possibilidades de personalização, ficaremos à disposição para explicar em mais detalhes.",
+    "orientacao": null
+  },
+  {
+    "titulo": "Integração com a máquina da Stone (Stone Code)",
+    "mensagem": "Fulano, vou te explicar como funciona a integração com a Stone. 😊\n📱 Aplicativo do Garçom\nCom o Aplicativo do Garçom, é possível lançar pedidos em mesas, comandas ou diretamente para o cliente, inclusive em mesas avulsas.\nO aplicativo funciona tanto em celulares Android quanto nas maquininhas POS da Stone, enviando os pedidos automaticamente para a cozinha, tornando o atendimento mais rápido, organizado e eficiente.\n📌 Como utilizar na POS da Stone\nPara habilitar o aplicativo na maquininha Stone, precisamos das seguintes informações:\nCNPJ do estabelecimento;\nFaturamento da empresa;\nStone Code da máquina POS.\nCom esses dados, realizamos a solicitação da integração.\n📲 Instalação no celular\nAndroid: https://play.google.com/store/apps/details?id=com.beetechappgarcom&hl=pt_BR\niPhone: O acesso é realizado pelo navegador Safari, sem necessidade de instalar um aplicativo.\nEsclareci sua dúvida? 😊",
+    "orientacao": "Observação interna: se o cliente informar os dados e quiser continuar, encaminhe o contato do suporte."
+  },
+  {
+    "titulo": "O que é Stone Code?",
+    "mensagem": "Esse código é utilizado para que os clientes consigam realizar a integração com o App do Garçom 😉",
+    "orientacao": "A Fran e o Rafael conseguem fazer essa liberação, mas antes verifique:\n1️⃣ Se o lead já possui a maquininha POS\n2️⃣ Se já tiver, oriente a entrar em contato com o suporte para realizar a integração\n3️⃣ Caso ainda não tenha, envie o link de cadastro da Stone: https://partnerhub.stone.com.br/#/lp-client/beefood---sistema-para-restaurantes"
+  },
+  {
+    "titulo": "Onde localizar o Stone Code",
+    "mensagem": "1- Abra o aplicativo Stone.\n2- Clique em Perfil e vá em Taxas e Tarifas.\n3- Seu Stonecode aparecerá logo abaixo do nome do seu estabelecimento",
+    "orientacao": null
+  },
+  {
+    "titulo": "Conciliação bancária",
+    "mensagem": "Sobre a conciliação bancária: trata-se do processo de cruzar as vendas realizadas com os valores recebidos nos extratos bancários, permitindo conferir se todos os recebimentos foram creditados corretamente.\nNo momento, a BeeFood ainda não possui essa funcionalidade, mas está na nossa linha de desenvolvimento.",
+    "orientacao": null
+  },
+  {
+    "titulo": "CMV",
+    "mensagem": "No momento não temos o cálculo de CMV, porém o sistema conta com a funcionalidade de ficha técnica, onde você consegue acompanhar o custo dos produtos e o valor de venda com mais controle.\nAlém disso, a partir do plano Rainha 👑, você também terá acesso ao módulo fiscal, com recursos como DRE e importação de XML 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "Nosso sistema é do servidor da Amazon?",
+    "mensagem": "Sim! Nosso servidor é hospedado na Amazon Web Services (AWS), uma das maiores e mais confiáveis infraestruturas de hospedagem em nuvem do mundo, garantindo segurança, estabilidade e alta disponibilidade para a operação do sistema.",
+    "orientacao": null
+  },
+  {
+    "titulo": "Pagamentos anuais",
+    "mensagem": "O pagamento anual já possui 5% de desconto 😉\nNessa modalidade, o valor é cobrado à vista no cartão.\nCaso precise cancelar ou solicitar estorno, isso pode ser feito dentro do prazo de 7 dias, conforme o direito do consumidor.",
+    "orientacao": null
+  },
+  {
+    "titulo": "Tem como tirar o pedido pela conversa com o robô?",
+    "mensagem": "Sim 😊\nO cliente consegue finalizar o pedido diretamente pelo chat.\nEm relação ao pagamento, é possível utilizar tanto o PIX próprio quanto o PIX Online.\nNo caso do PIX Online, o robô envia automaticamente o link de pagamento para o cliente finalizar o pedido 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "Quanto tempo para repasse?",
+    "mensagem": "Receber na hora, 14 dias ou 28 dias. Mas cada uma tem uma taxa.",
+    "orientacao": null
+  },
+  {
+    "titulo": "O sistema faz busca de NF emitidas no CNPJ?",
+    "mensagem": "De momento não 😊\nO nome dessa funcionalidade é Guardião XML.\nCom ela, o cliente consegue carregar/importar os arquivos XML das notas para dentro do sistema. Essa função estará disponível em breve 😉\nO XML são as notas fiscais de compras realizadas no CNPJ da empresa, por exemplo quando o estabelecimento solicita colocar o CNPJ na nota ao comprar produtos ou mercadorias.",
+    "orientacao": null
+  },
+  {
+    "titulo": "Como funciona o sistema + totem",
+    "mensagem": "Vamos lá 😊\nTemos o Sistema Geral, o Sistema do Totem e toda a nossa equipe para te auxiliar no processo:\n🔹 Sistema Geral:\nÉ onde você recebe os pedidos e faz toda a gestão do restaurante, como controle de estoque, ficha técnica, cardápios, relatórios e muito mais.\n🔹 Sistema do Totem:\nO valor é cobrado por equipamento.\nImportante: não é possível contratar apenas o sistema do totem sem o sistema geral.\n🔹 Suporte e Implantação:\nVocê terá treinamento, suporte de segunda a segunda e uma equipe responsável por cadastrar toda a plataforma para você 😉\nE essa parte consigo te entregar gratuitamente.",
+    "orientacao": null
+  },
+  {
+    "titulo": "Tem CRM?",
+    "mensagem": "Sim 😊\nSeria o cadastro dos clientes dentro da plataforma.\nE para completar, também contamos com integração com o Repediu 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "O que é SSD?",
+    "mensagem": "SSD é a sigla para Solid State Drive 😊\nÉ um tipo de armazenamento usado em computadores e notebooks, responsável por guardar arquivos, sistema e programas — como se fosse o “HD”, porém muito mais rápido.\n✅ Liga o computador mais rápido\n✅ Abre sistemas e programas com mais velocidade\n✅ Melhor desempenho no dia a dia\n✅ Mais silencioso e resistente que um HD comum 😉",
+    "orientacao": "Quantos de SSD precisa? Recomendamos SSD de 240GB para melhor desempenho do sistema. Também é possível usar 128GB."
+  },
+  {
+    "titulo": "Pixel / Meta",
+    "mensagem": "Fulano, vou te explicar como funciona a integração com o Pixel. 😊\n📊 Integração com o Pixel (Meta e Google)\nA BeeFood permite integrar o Pixel da Meta (Facebook e Instagram) e também as ferramentas do Google, possibilitando o acompanhamento das ações realizadas pelos clientes no seu Cardápio Digital.\nCom essa integração, você consegue registrar eventos como:\nVisualização do cardápio;\nAdição de produtos ao carrinho;\nInício da finalização da compra;\nCompra realizada, entre outros.\nEsses dados ajudam a otimizar suas campanhas de anúncios, permitindo que as plataformas entendam melhor o comportamento dos clientes e entreguem seus anúncios para pessoas com maior chance de compra.\nEsclareci sua dúvida? 😊",
+    "orientacao": "A integração não mostra o retorno exato da campanha, como por exemplo: “investi R$1.000 e tive 50 clientes”."
+  },
+  {
+    "titulo": "Limitação no agendamento",
+    "mensagem": "Sim 😊\nÉ possível limitar a quantidade de dias disponíveis para que o cliente realize pedidos agendados dentro da plataforma 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "Agendamento: dá para limitar pedidos por hora?",
+    "mensagem": "Sim 😊\nO sistema permite limitar a quantidade de pedidos por horário.\nExemplo: receber até 3 pedidos dentro de 1 hora.\nPorém, o controle é feito pela quantidade de pedidos e não pela quantidade de itens dentro deles.\nOu seja, se o limite for 2 açaís por pedido e um cliente fizer um pedido com 4 açaís, o sistema não consegue bloquear automaticamente esse controle 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "Taxa da máquina para ser cobrada do cliente",
+    "mensagem": "Não é possível cobrar a taxa da maquininha diretamente do cliente 😊\nO que pode ser feito é ajustar/arredondar o valor dos produtos e, na parte financeira/recebimentos, configurar a porcentagem referente à taxa da maquininha 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "Contato do Mercado Pago",
+    "mensagem": "Link para contato com o Mercado Pago, tem o contato 0800 e o fale conosco direcionado para o atendimento por WhatsApp:\nhttps://www.mercadopago.com.br/sac-pin/public-info",
+    "orientacao": null
+  },
+  {
+    "titulo": "Tem nota fiscal para Santa Catarina?",
+    "mensagem": "📍 Sobre a homologação em Santa Catarina:\nAtendemos normalmente todas as regiões, com exceção dos DDDs 47, 48 e 49 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "Se o cliente quiser mudar de sistema",
+    "mensagem": "Se um dia você decidir migrar para outro sistema, a carteira de clientes pode ser disponibilizada?\nSim 😊\nÉ possível realizar a disponibilização/exportação da carteira de clientes 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "Aplicativos de entrega parceiros",
+    "mensagem": null,
+    "orientacao": "Agilizone e Foody Delivery são empresas de roteirização de entregas.\nPick n Go! e Let's Express são empresas que fornecem motoboys."
+  },
+  {
+    "titulo": "Regiões onde a Let's Delivery opera",
+    "mensagem": "A Let's Delivery atende atualmente nas cidades de:\n• Sorocaba\n• Votorantim\n• Limeira\n• Jundiaí\n• São Roque\n• Itu\n• Salto\n• Indaiatuba\n• Itatiba\n• Itapetininga\n• Bragança Paulista 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "Expectativa de retorno do investimento",
+    "mensagem": "O retorno do investimento pode variar conforme o volume de pedidos e o engajamento da operação 😊\nMas a maioria dos nossos clientes percebe resultados já nos primeiros meses, relatando em média até 20% de aumento nos pedidos, além de mais eficiência e menos erros na operação 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "Pagar pela API do Google",
+    "mensagem": "A criação da conta e da chave de API é gratuita 😊\nPorém, o Google solicita o cadastro de um cartão internacional por questão de segurança.\nVocê recebe US$300 de crédito por 90 dias e, após esse período, ganha US$200 mensais para utilização no Google Maps, o que equivale a cerca de 28.500 requisições 😉\nSó haverá cobrança caso ultrapasse esse limite.",
+    "orientacao": null
+  },
+  {
+    "titulo": "Recebimento por vale-refeição no totem",
+    "mensagem": "Para aceitar vale-refeição no totem, é necessário que a dona do restaurante tenha essa forma de pagamento liberada junto à adquirente/maquininha TEF 😊\nOu seja, o cliente precisa confirmar diretamente com o banco ou operadora da maquininha se essa função está habilitada 😉",
+    "orientacao": null
+  },
+  {
+    "titulo": "Custos fixos",
+    "mensagem": "Dentro do sistema existe um campo para cadastrar os custos fixos dos produtos 😊\nAlém disso, também contamos com a função de contas a pagar e receber, onde você consegue organizar despesas mensais, como:\n✅ Fornecedores\n✅ Funcionários\n✅ Aluguel\n✅ Entre outros custos da operação 😉",
+    "orientacao": null
+  }
+]

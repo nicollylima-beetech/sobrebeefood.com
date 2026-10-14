@@ -1,0 +1,224 @@
+[
+  {
+    "categoria": "Visão geral",
+    "titulo": "Resumo geral",
+    "mensagem": "Nosso sistema é uma solução completa para o seu negócio! 🍔📲\nIntegramos PDV, delivery com iFood e outros marketplaces, cardápio digital e automação no WhatsApp para acompanhamento de pedidos.\nNo atendimento presencial, você conta com QR Code nas mesas, comandas, totem de autoatendimento e emissão de nota fiscal integrada.\nAlém disso, oferecemos controle de estoque, gestão de caixa, relatórios completos e muito mais — tudo em uma única plataforma para facilitar sua rotina e aumentar sua produtividade. 😉",
+    "orientacao": null
+  },
+  {
+    "categoria": "Visão geral",
+    "titulo": "Gestão",
+    "mensagem": "Na parte de gestão, você conta com ferramentas como controle de estoque, ficha técnica, abertura e fechamento de caixa simplificados, DRE, relatórios completos de vendas e muito mais! 😉",
+    "orientacao": null
+  },
+  {
+    "categoria": "Visão geral",
+    "titulo": "PDV (ponto de vendas | frente de caixa)",
+    "mensagem": "Com o PDV do BeeFood, você vende, lança pedidos em mesas ou comandas e recebe pagamentos de um jeito rápido e descomplicado.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Visão geral",
+    "titulo": "Suporte",
+    "mensagem": "Nosso suporte é 100% humanizado! Uma equipe treinada e pronta pra te ajudar remotamente, com atenção de verdade — todos os dias, inclusive feriados.\n🕘 Horários de atendimento:\nSegunda a sábado: 10h às 22h\nDomingo: 11h às 14h e 17h às 21h",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "Sobre o delivery",
+    "mensagem": "No delivery, você oferece um cardápio digital próprio para pedidos online, enquanto nosso robô inteligente com IA no WhatsApp mantém seus clientes informados em tempo real sobre o status dos pedidos.\nMais velocidade, menos esforço e uma experiência excelente para o cliente.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "Integração com os marketplaces",
+    "mensagem": "Muito mais praticidade: nosso sistema integra com iFood, 99Food, UaiRango, Rappi, Delivery Much e AiqFome — todos os pedidos chegam em um único lugar, facilitando sua operação.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "Integração com o iFood",
+    "mensagem": "🚀 Integração com iFood e marketplaces – em 3 etapas que turbinam sua operação:\n1. Recebimento direto no sistema BeeFood\nAssim que o cliente faz o pedido pelo iFood (ou outro marketplace), ele cai automaticamente dentro do seu sistema BeeFood, sem necessidade de redigitar nada ou usar telas paralelas. Isso evita erros e ganha tempo na operação!\n2. Baixa de estoque automatizada dentro do BeeFood\nA cada pedido recebido, o sistema já faz a baixa no seu próprio estoque interno, garantindo controle real da sua cozinha. Importante: essa baixa não interfere no estoque do iFood, ou seja, você tem o controle total no seu PDV, do seu jeito.\n3. Vínculo com o caixa da plataforma\nTodos os pedidos recebidos ficam registrados e vinculados ao seu caixa, com valores, forma de pagamento e origem (iFood, WhatsApp, balcão etc.). Isso dá uma visão completa das vendas e do financeiro, centralizando tudo num só lugar.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "BeeBot (robô do WhatsApp)",
+    "mensagem": "O robô da BeeFood atende diversos clientes simultaneamente utilizando inteligência artificial para tornar o atendimento mais rápido e eficiente.\nEle envia o cardápio digital automaticamente, responde mensagens, registra pedidos e ainda atualiza o cliente sobre o status da entrega — tudo de forma automatizada, trazendo mais agilidade para sua operação e reduzindo o tempo de atendimento.\n👉 Faça um pedido teste diretamente pelo WhatsApp:\nhttps://api.whatsapp.com/send/?phone=5515991320694&text&type=phone_number&app_absent=0",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "Aplicativo do motoboy",
+    "mensagem": "Importante: a contratação dos motoboys é de responsabilidade do estabelecimento ou pode ser realizada diretamente via iFood.\nPara facilitar a operação das entregas, a BeeFood oferece duas soluções:\n📍 Aplicativo do Motoboy\nPermite definir qual entregador ficará responsável por cada pedido, além de auxiliar na otimização das rotas, contribuindo para entregas mais rápidas e organizadas.\n📍 Módulo Entrega Fácil (iFood)\nCom essa integração, é possível solicitar motoboys diretamente pelo sistema, trazendo mais praticidade para a gestão das entregas.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "Pedido agendado / agendamento",
+    "mensagem": "No cardápio digital, o cliente também pode agendar pedidos.\n🔹 Como funciona:\n1️⃣ O cliente escolhe os itens e define a data e horário de retirada ou entrega.\n2️⃣ O pedido entra no sistema marcado como “Agendado” e fica guardado até o horário escolhido.\n3️⃣ Quando chegar o momento, o restaurante recebe a notificação para preparar e despachar.\n4️⃣ O pagamento pode ser feito antecipado ou na hora da retirada/entrega.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "Sobre ocultações",
+    "mensagem": "Escolha em quais dias da semana suas promoções estarão ativas e oculte quando quiser — controle total na palma da sua mão!",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "Repediu",
+    "mensagem": "🔁 O que é o Repediu?\nÉ uma função do BeeFood que facilita a recompra: o cliente consegue repetir um pedido anterior com apenas um clique, direto pelo WhatsApp ou app.\n💥 Por que isso é importante pro restaurante?\nMais agilidade: o cliente não precisa montar o pedido de novo.\nMais vendas recorrentes: quanto mais simples pedir, mais vezes o cliente volta.\nExperiência sem fricção: prática e rápida.\nMenos erros: pedidos já validados antes = menos retrabalho na cozinha.\n👉 Quer ativar? Cadastre-se aqui:\nhttps://afiliado.repediu.com.br/afiliado/cadastro?bid=RZOYRVN",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "Domínio próprio",
+    "mensagem": "🔗 Seu cliente verá o seu domínio personalizado (ex: www.seurestaurante.com.br) no navegador, mantendo a identidade da sua marca.\nAo clicar, ele será automaticamente redirecionado para o seu cardápio digital no nosso sistema, que fica no endereço:\n👉 https://menu.beefood.com.br/doonmadruga\nOu seja, mesmo utilizando nosso sistema, o acesso continua com a cara do seu restaurante! 🐝🍽",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "Pixel do Facebook",
+    "mensagem": "Contamos com o Facebook Pixel, que rastreia as ações dos clientes no seu cardápio digital e ajuda a otimizar suas campanhas.\nAssim, seus anúncios ficam mais eficientes e atingem exatamente o público certo!",
+    "orientacao": null
+  },
+  {
+    "categoria": "Delivery",
+    "titulo": "Marketplaces que disponibilizam nºs dos clientes",
+    "mensagem": "Sobre os pedidos feitos nos apps de delivery:\nAiqfome e UaiRango: os cadastros dos clientes ficam salvos no sistema.\niFood e Rappi: esses apps não disponibilizam os números dos clientes.\nDelivery Much: em alguns casos, os dados são disponibilizados.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Presencial",
+    "titulo": "QR Code | comandas eletrônicas",
+    "mensagem": "Com o módulo de QR Code nas mesas, o cliente acessa o cardápio digital apenas apontando a câmera do celular, sem precisar baixar aplicativos.\nAlém disso, acompanha o atendimento da mesa em tempo real, enquanto os pedidos são enviados automaticamente para a cozinha.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Presencial",
+    "titulo": "Aplicativo do garçom",
+    "mensagem": "Com o aplicativo para garçom, é possível lançar pedidos em mesas, comandas ou diretamente para o cliente, inclusive em mesas avulsas.\nO app funciona no celular e também nas maquininhas Stone, enviando os pedidos direto para a cozinha e tornando o atendimento mais ágil e organizado.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Presencial",
+    "titulo": "Tablet",
+    "mensagem": "A BeeFood oferece um moderno sistema de atendimento em mesas para tablets, permitindo que os clientes realizem pedidos diretamente da mesa com praticidade e agilidade, por meio do cardápio digital integrado à leitura de QR Code.\nImportante: a BeeFood fornece exclusivamente o software da solução, não os equipamentos (tablets).",
+    "orientacao": null
+  },
+  {
+    "categoria": "Presencial",
+    "titulo": "Sobre a POS (Stone)",
+    "mensagem": "Temos integração com a maquininha da Stone (POS), totalmente conectada ao sistema BeeFood. Assim, os pagamentos são feitos direto no sistema, sem precisar digitar nada manualmente.\n💳 Aceita cartão de crédito, débito e até Pix, permitindo receber direto na mesa.\n📊 Todos os pagamentos já ficam registrados no PDV, facilitando tanto o fechamento de caixa quanto o controle financeiro.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Presencial",
+    "titulo": "Integração Stone (contratar maquininha)",
+    "mensagem": "https://partnerhub.stone.com.br/#/lp-client/beefood---sistema-para-restaurantes",
+    "orientacao": "Para leads interessados em contratar a maquininha da Stone: encaminhe o link abaixo para que façam a solicitação direto com eles.\nSe o lead já tiver a máquina da Stone: solicite o Stone Code para que possamos liberar o aplicativo."
+  },
+  {
+    "categoria": "Presencial",
+    "titulo": "Autoatendimento | Totem",
+    "mensagem": "Com o Totem, o próprio cliente faz o pedido, o que ajuda a reduzir filas, agiliza o atendimento e ainda dá mais velocidade na cozinha. 🚀\n👉 Dá uma olhada nesse vídeo de um cliente nosso usando o Totem no balcão: https://www.instagram.com/reel/DJcpiYlvmqd/?igsh=MXdxaG55MXpoY2p0dA==",
+    "orientacao": "Pergunta para fazer ao lead: Você já tem o equipamento no seu atendimento?\n\nQual é o preço do equipamento? O aluguel do totem está entre R$ 800 e R$ 1.500, ou comprar um pronto está entre R$ 8.000 e R$ 14.000. Se quiser, mande o link para o lead montar também, que às vezes fica mais em conta.\n\nComo funciona a cobrança:\n• R$ 200,00 por software em cada equipamento de totem.\n• Integração com TEF (cartão direto no totem): R$ 119,90.\n• Ou AutoTEF da Stone: R$ 39,90.\n\nComo explicar totem + sistema:\n• Sistema Geral: aqui caem todos os pedidos, com controle de estoque, ficha técnica, cardápios e muito mais.\n• Sistema do Totem: cada equipamento tem um valor. Só pode ser adicionado junto com o sistema geral.\n• Suporte: treinamento completo e suporte de segunda a segunda. A equipe cadastra toda a plataforma, sem custo."
+  },
+  {
+    "categoria": "Presencial",
+    "titulo": "Parceiros de totem | equipamento",
+    "mensagem": "Segue os contatos dos parceiros de Totem:\ninfoss: (18) 3902-9422 https://wa.me/551839029422 (Somente totem)\nAtta: (19) 99610-8774 https://api.whatsapp.com/send/?phone=5519996108774 (Totem, Tablet, Desktop, Impressora)\n\nSegue os links para você ir se baseando de como seria para montar:\n> Monitor tela touch: https://produto.mercadolivre.com.br/MLB-3354457193-monitor-touch-portatil-156-ips-full-hd-usb-c-hdmi-cabos-_JM\n> Mini PC: https://produto.mercadolivre.com.br/MLB-5147389334-cpu-dell-optiplex-3050-mini-core-i3-7ger-8gb-240gb-ssd-novo-_JM\n> E uma impressora. Recomendamos:\n- Bematech MP-4200TH;\n- Elgin i8 ou i9;\n- Control ID - Print ID;\n- Epson TM-T20 ou TM-T20X (Epson tem suporte de sábado até 20h, é uma vantagem).",
+    "orientacao": null
+  },
+  {
+    "categoria": "Pagamentos",
+    "titulo": "Pagamentos online (PIX)",
+    "mensagem": "Nosso PIX online, em parceria com o Banco do Brasil, conta com tecnologia antifraude que garante total segurança nas vendas. Os pagamentos são confirmados automaticamente, evitando golpes e eliminando a necessidade de conferência manual. Com a intermediação da BeeFood, o repasse é feito em até 2 dias úteis, com taxa de apenas 1%!\nE para pagamentos por cartão, temos parceria com o Mercado Pago, oferecendo taxas exclusivas para nossos clientes.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Pagamentos",
+    "titulo": "Mercado Pago",
+    "mensagem": "Temos integração com o Mercado Pago para pagamento via cartão de crédito online. As taxas são definidas diretamente com eles, de forma transparente e segura.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Gestão e fiscal",
+    "titulo": "Sobre o caixa",
+    "mensagem": "Fechamento de caixa seguro e prático: o sistema permite que o funcionário visualize os produtos e formas de pagamento sem acessar os valores, garantindo o fechamento às cegas. Além disso, a abertura e o fechamento de caixa são feitos de forma rápida e intuitiva.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Gestão e fiscal",
+    "titulo": "Sobre o financeiro",
+    "mensagem": "Pra te ajudar na parte financeira, o sistema conta com:\nControle de contas a pagar e a receber\nRelatórios financeiros completos pra acompanhar seu caixa de perto\nEmissão de Cupom Fiscal Eletrônico (CF-e SAT), garantindo conformidade com a legislação",
+    "orientacao": null
+  },
+  {
+    "categoria": "Gestão e fiscal",
+    "titulo": "Sobre o estoque",
+    "mensagem": "Hoje, nosso sistema conta com um módulo de estoque, onde você pode realizar todo o controle dos seus produtos. Quando um pedido é importado de um Marketplace, como o iFood, o sistema faz a baixa automática do estoque internamente.\nPor exemplo: se você tem 2 latas de Coca-Cola cadastradas e um pedido é recebido pelo iFood, o estoque dentro do BeeFood passará automaticamente para 1 (ou 0, dependendo da quantidade vendida). O único ponto é que essa atualização ainda não é sincronizada com os demais Marketplaces.\nOu seja, se você também vende pelo 99Food, o estoque exibido lá continuará o mesmo até que seja atualizado diretamente na plataforma.\nEstamos trabalhando para implementar essa comunicação entre os Marketplaces, para que a atualização de estoque seja feita de forma automática em todos eles.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Gestão e fiscal",
+    "titulo": "Lançar compras e pagamentos por categoria",
+    "mensagem": "Sim, é possível lançar as compras por categoria dentro do sistema. Essa funcionalidade facilita o controle de estoque, a análise de custos e a organização financeira do negócio.\nAlém disso, o sistema permite gerar relatórios mais detalhados por categoria, proporcionando uma visão mais clara da operação e auxiliando na tomada de decisões estratégicas.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Gestão e fiscal",
+    "titulo": "Conciliação bancária",
+    "mensagem": "Atualmente, o sistema não possui uma funcionalidade automatizada de conciliação bancária. No entanto, é possível cadastrar sua conta bancária na plataforma e realizar a conferência das vendas manualmente.\nAlém disso, o sistema permite filtrar informações por período, verificar pagamentos recebidos e acompanhar pendências financeiras, facilitando o controle e a gestão do fluxo financeiro.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Gestão e fiscal",
+    "titulo": "Emissão de nota fiscal (NFC-e)",
+    "mensagem": "Temos um módulo híbrido de emissão de nota fiscal, onde você decide no momento da venda se quer ou não emitir. Tudo de forma prática e flexível.\n\nExtra:\n➡️ Em São Paulo, trabalhamos com NFC-e e NF-e, e o melhor: você não precisa mais do equipamento SAT com o nosso sistema.\n➡️ No Ceará, a emissão é feita via NFC-e e NF-e, usando o equipamento MFe.\n🛰️ O MFe é parecido com o SAT, mas conta com localização via GPS, trazendo ainda mais controle.",
+    "orientacao": "Atenção SDR: DDD 47, 48 e 49 (Santa Catarina) não têm emissão fiscal homologada."
+  },
+  {
+    "categoria": "Gestão e fiscal",
+    "titulo": "ME ou MEI",
+    "mensagem": "MEI: não é obrigatório emitir nota fiscal (NFC-e).\nME: pode emitir, caso queira utilizar essa função.",
+    "orientacao": null
+  },
+  {
+    "categoria": "Equipamentos",
+    "titulo": "Sem computador/notebook",
+    "mensagem": "Pergunto porque, para aproveitar ao máximo as principais funcionalidades do sistema, é necessário utilizar um computador ou notebook com sistema operacional Windows.\nVocê já tem uma previsão de quando pretende adquirir um?",
+    "orientacao": null
+  },
+  {
+    "categoria": "Equipamentos",
+    "titulo": "Impressoras sugeridas",
+    "mensagem": "Recomendamos esses modelos e marcas de impressoras:\n- Bematech MP-4200TH;\n- Elgin i8 ou i9;\n- Epson TM-T20 ou TM-T20X (Epson tem suporte de sábado até 20h, é uma vantagem).",
+    "orientacao": null
+  },
+  {
+    "categoria": "Mensagens prontas",
+    "titulo": "Acessar o sistema",
+    "mensagem": "Se ainda não fez o cadastro do seu estabelecimento, é só acessar este link e se cadastrar:\n👉 https://beefood.app/cadastro\nLembrando que o sistema não precisa ser instalado, você acessa ele pelo navegador mesmo.\n💻 https://beefood.app/login",
+    "orientacao": null
+  },
+  {
+    "categoria": "Mensagens prontas",
+    "titulo": "Leads que não lembram o acesso",
+    "mensagem": "Obrigada por aguardar!\nSegue abaixo seu e-mail de login:\n🔐 Login: fulano@taltaltaltal.com\nSe não lembrar da senha, é só redefinir por aqui:\n👉 https://app.beefood.com.br/alterar-senha",
+    "orientacao": null
+  },
+  {
+    "categoria": "Mensagens prontas",
+    "titulo": "Iniciou a parceria",
+    "mensagem": "🎉 Bem-vindo(a) à BeeFood! Muito feliz em ter você com a gente.\nSeu cadastro já foi enviado e nossa equipe de Onboarding vai entrar em contato em breve para pedir algumas informações (cardápio, logo, etc.). Enquanto isso, preencha este link para agilizar:\n👉 https://www.cognitoforms.com/BeeFood2/BoasVindas\nDados de acesso:\n🔑 Login:\n🔑 Senha provisória:\n📲 Suporte exclusivo via WhatsApp: https://api.whatsapp.com/send?phone=551532340779\nou salve o número (15) 3234-0779.\n▶️ Conheça também nosso canal no YouTube: https://www.youtube.com/@beefood-sistema-restaurantes\nObrigado por escolher a BeeFood! 🐝",
+    "orientacao": null
+  },
+  {
+    "categoria": "Mensagens prontas",
+    "titulo": "Revenda | parceria",
+    "mensagem": "Para parcerias com a BeeFood, você pode encaminhar sua proposta diretamente ao responsável pela área:\nRafael Muscari\n📞 (11) 91066-9820\n📧 rafael.muscari@beetech.com.br\nTambém é possível acessar mais informações pelo link abaixo:\nhttps://beefood.com.br/parceiros/\nAgradecemos o seu interesse e desejamos um ótimo dia!",
+    "orientacao": null
+  }
+]
